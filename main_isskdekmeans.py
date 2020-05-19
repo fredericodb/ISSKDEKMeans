@@ -67,7 +67,7 @@ sa_flag = True
 sa_results = []
 for ds in datasets:
     if ds == 'lenses' or ds == 'zoo' or ds == 'digit1': # or ds == 'cleveland' or ds == 'led7digit' or ds == 'newthyroid':
-        di = di + 1
+       di = di + 1
        continue
     print('\nBase %s\n' % ds)
     # read data samples
