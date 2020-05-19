@@ -11,7 +11,7 @@ import logging
 
 class ISSKDEKMeans(BaseEstimator):
 
-    def __init__(self, nk=2, n=2, w=0, dt='euclidean', cini='quantile', nit=100, thd=0, alpha=0.75, mo=1, plug=False,
+    def __init__(self, nk=2, n=2, w=0, dt='euclidean', cini='quantile', nit=100, thd=0, alpha=0.75, mo=1, plug=True,
                  kde_kernel='gaussian'):
         self.clusters = 0
         self.cf_n = 0

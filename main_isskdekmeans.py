@@ -311,7 +311,8 @@ for di, ds in datasets:
     thds = [0]
     alphas = [0.75]
     mos = [1]
-    plugs = [False]
+    plugs = [True]
+    kde_kernel = ['gaussian']
 
     varnk = False
     vardt = False
@@ -319,7 +320,7 @@ for di, ds in datasets:
     varthd = False
     varalpha = True
     varmo = False
-    varplug = True
+    varplug = False
     varkdekernel = False
 
     if varnk:
@@ -336,7 +337,7 @@ for di, ds in datasets:
     if varmo:
         mos = numpy.arange(1, 16, 2)
     if varplug:
-        plugs = [True]
+        plugs = [False, True]
     if varkdekernel:
         kde_kernel = ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
     parameters = {'nk': nks,
