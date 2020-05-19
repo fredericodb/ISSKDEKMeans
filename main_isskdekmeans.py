@@ -386,6 +386,7 @@ for ds in datasets:
             sa_dic['accuracy'] = error_est
             sa_res.append(sa_dic)
             print(sa_dic)
+
     # online training - unlabeled + L% of labeled
     wd = 0
     m_u = data_u.shape[0]
