@@ -67,6 +67,7 @@ sa_flag = True
 sa_results = []
 for ds in datasets:
     if ds == 'lenses' or ds == 'zoo' or ds == 'digit1': # or ds == 'cleveland' or ds == 'led7digit' or ds == 'newthyroid':
+        di = di + 1
        continue
     print('\nBase %s\n' % ds)
     # read data samples
@@ -454,6 +455,7 @@ for ds in datasets:
         accs[di, 12] = error_kmss
         sa_dsres = {'dataset': ds, 'results': sa_res}
         sa_results.append(sa_dsres)
+        di = di + 1
         continue
 
     iselect = numpy.nonzero(uselect)[0]
@@ -797,6 +799,8 @@ di = 0
 for ds in datasets:
     print('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f' % (ds, accs[di, 0], accs[di, 1], accs[di, 2], accs[di, 3], accs[di, 4], accs[di, 5], accs[di, 6], accs[di, 7], accs[di, 8], accs[di, 9], accs[di, 10], accs[di, 11], accs[di, 12], accs[di, 13], accs[di, 14], ks[di, 0], ks[di, 1], ks[di, 2], ks[di, 3], times[di, 0], times[di, 1], times[di, 2], times[di, 3], times[di, 4], times[di, 5], times[di, 6], times[di, 7], times[di, 8], times[di, 9], times[di, 10], times[di, 11], times[di, 12], times[di, 13], times[di, 14]))
     di = di+1
+
+print(sa_results)
 
 print('Parameters analysed:')
 if varnk:
