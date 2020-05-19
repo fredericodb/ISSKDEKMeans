@@ -315,14 +315,14 @@ for ds in datasets:
     plugs = [True]
     kde_kernel = ['gaussian']
 
-    varnk = False
+    varnk = True
     vardt = False
     varnit = False
     varthd = False
-    varalpha = True
-    varmo = False
+    varalpha = False
+    varmo = True
     varplug = False
-    varkdekernel = True
+    varkdekernel = False
 
     if varnk:
         nks = numpy.arange(n_c, 4 * n_c, n_c)
@@ -371,7 +371,8 @@ for ds in datasets:
     import copy
     kms2 = copy.deepcopy(bkms)
 
-    # sensibility analsys
+    # sensibility analysis
+    sa_res = []
     # k
     if varnk:
         for param in grid.cv_results_['params']:
@@ -382,6 +383,9 @@ for ds in datasets:
             output_est = est.predict(data_t)
             error_est = accuracy_score(labels_t, output_est)
             print('k = %d | accuracy = %.4f' % (param['nk'], error_est))
+            sa_dic = param
+            sa_dic['accuracy'] = error_est
+            sa_res.append(sa_dic)
     # kde_kernel
     if varkdekernel:
         for param in grid.cv_results_['params']:
@@ -392,6 +396,9 @@ for ds in datasets:
             output_est = est.predict(data_t)
             error_est = accuracy_score(labels_t, output_est)
             print('kde_kernel = %s | accuracy = %.4f' % (param['kde_kernel'], error_est))
+            sa_dic = param
+            sa_dic['accuracy'] = error_est
+            sa_res.append(sa_dic)
     # alpha
     if varalpha:
         for param in grid.cv_results_['params']:
@@ -402,6 +409,9 @@ for ds in datasets:
             output_est = est.predict(data_t)
             error_est = accuracy_score(labels_t, output_est)
             print('alpha = %.2f | accuracy = %.4f' % (param['alpha'], error_est))
+            sa_dic = param
+            sa_dic['accuracy'] = error_est
+            sa_res.append(sa_dic)
     # degenerated clusters
     if varmo:
         for param in grid.cv_results_['params']:
@@ -412,7 +422,22 @@ for ds in datasets:
             output_est = est.predict(data_t)
             error_est = accuracy_score(labels_t, output_est)
             print('mo = %d | accuracy = %.4f' % (param['mo'], error_est))
-
+            sa_dic = param
+            sa_dic['accuracy'] = error_est
+            sa_res.append(sa_dic)
+    # threshold
+    if varthd:
+        for param in grid.cv_results_['params']:
+            est = ISSKDEKMeans(nk=param['nk'], n=param['n'], w=param['w'], dt=param['dt'], nit=param['nit'],
+                               thd=param['thd'], alpha=param['alpha'], mo=param['mo'], plug=param['plug'],
+                               kde_kernel=param['kde_kernel'])
+            est.fit(data_l, labels_l)
+            output_est = est.predict(data_t)
+            error_est = accuracy_score(labels_t, output_est)
+            print('thd = %.6f | accuracy = %.4f' % (param['thd'], error_est))
+            sa_dic = param
+            sa_dic['accuracy'] = error_est
+            sa_res.append(sa_dic)
     # online training - unlabeled + L% of labeled
     wd = 0
     m_u = data_u.shape[0]
