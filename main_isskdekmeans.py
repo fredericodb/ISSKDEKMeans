@@ -371,10 +371,32 @@ for di, ds in datasets:
     kms2 = copy.deepcopy(bkms)
 
     # sensibility analsys
+    # k
+    if varnk:
+        for param in grid.cv_results_['params']:
+            est = ISSKDEKMeans(nk=param['nk'], n=param['n'], w=param['w'], dt=param['dt'], nit=param['nit'],
+                               thd=param['thd'], alpha=param['alpha'], mo=param['mo'], plug=param['plug'],
+                               kde_kernel=param['kde_kernel'])
+            est.fit(data_l, labels_l)
+            output_est = est.predict(data_t)
+            error_est = accuracy_score(labels_t, output_est)
+            print('k = %d | accuracy = %.4f' % (param['nk'], error_est))
+    # kde_kernel
+    if varkdekernel:
+        for param in grid.cv_results_['params']:
+            est = ISSKDEKMeans(nk=param['nk'], n=param['n'], w=param['w'], dt=param['dt'], nit=param['nit'],
+                               thd=param['thd'], alpha=param['alpha'], mo=param['mo'], plug=param['plug'],
+                               kde_kernel=param['kde_kernel'])
+            est.fit(data_l, labels_l)
+            output_est = est.predict(data_t)
+            error_est = accuracy_score(labels_t, output_est)
+            print('kde_kernel = %s | accuracy = %.4f' % (param['kde_kernel'], error_est))
     # alpha
     if varalpha:
         for param in grid.cv_results_['params']:
-            est = ISSKDEKMeans(nk=param['nk'], n=param['n'], w=param['w'], dt=param['dt'], nit=param['nit'], thd=param['thd'], alpha=param['alpha'], mo=param['mo'], plug=param['plug'])
+            est = ISSKDEKMeans(nk=param['nk'], n=param['n'], w=param['w'], dt=param['dt'], nit=param['nit'],
+                               thd=param['thd'], alpha=param['alpha'], mo=param['mo'], plug=param['plug'],
+                               kde_kernel=param['kde_kernel'])
             est.fit(data_l, labels_l)
             output_est = est.predict(data_t)
             error_est = accuracy_score(labels_t, output_est)
@@ -382,7 +404,9 @@ for di, ds in datasets:
     # degenerated clusters
     if varmo:
         for param in grid.cv_results_['params']:
-            est = ISSKDEKMeans(nk=param['nk'], n=param['n'], w=param['w'], dt=param['dt'], nit=param['nit'], thd=param['thd'], alpha=param['alpha'], mo=param['mo'], plug=param['plug'])
+            est = ISSKDEKMeans(nk=param['nk'], n=param['n'], w=param['w'], dt=param['dt'], nit=param['nit'],
+                               thd=param['thd'], alpha=param['alpha'], mo=param['mo'], plug=param['plug'],
+                               kde_kernel=param['kde_kernel'])
             est.fit(data_l, labels_l)
             output_est = est.predict(data_t)
             error_est = accuracy_score(labels_t, output_est)
