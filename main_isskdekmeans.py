@@ -337,6 +337,8 @@ for di, ds in datasets:
         mos = numpy.arange(1, 16, 2)
     if varplug:
         plugs = [True]
+    if varkdekernel:
+        kde_kernel = ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
     parameters = {'nk': nks,
                   'n': n,
                   'w': w,
@@ -345,7 +347,8 @@ for di, ds in datasets:
                   'thd': thds,
                   'alpha': alphas,
                   'mo': mos,
-                  'plug': plugs}
+                  'plug': plugs,
+                  'kde_kernel': kde_kernel}
 
     grid = GridSearchCV(ISSKDEKMeans(), parameters, cv=10, scoring='accuracy', verbose=10)
     grid.fit(data_l, labels_l)
