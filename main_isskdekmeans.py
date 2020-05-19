@@ -850,9 +850,9 @@ for ds in datasets:
     print('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f' % (ds, accs[di, 0], accs[di, 1], accs[di, 2], accs[di, 3], accs[di, 4], accs[di, 5], accs[di, 6], accs[di, 7], accs[di, 8], accs[di, 9], accs[di, 10], accs[di, 11], accs[di, 12], accs[di, 13], accs[di, 14], ks[di, 0], ks[di, 1], ks[di, 2], ks[di, 3], times[di, 0], times[di, 1], times[di, 2], times[di, 3], times[di, 4], times[di, 5], times[di, 6], times[di, 7], times[di, 8], times[di, 9], times[di, 10], times[di, 11], times[di, 12], times[di, 13], times[di, 14]))
     di = di+1
 
-print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel')
+print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy')
 for ds, dr in sa_results:
     for param in dr:
-        print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s' % (
+        print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f' % (
         ds, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'], param['plug'],
-        param['kde_kernel']))
+        param['kde_kernel'], param['accuracy']))
