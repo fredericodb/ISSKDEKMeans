@@ -53,9 +53,9 @@ datasetvar = 'Dataset'
 
 dic = readmat(datasetsource, [datasetvar])
 
-#datasets = dic[datasetvar][0]
+datasets = dic[datasetvar][0]
 #datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
-datasets = numpy.array([['ionosphere']])
+#datasets = numpy.array([['ionosphere']])
 #datasets = numpy.array([['appendicitis'], ['cleveland'],['g241n']])
 
 accs = numpy.zeros((datasets.shape[0], 15))
@@ -63,7 +63,8 @@ ks = numpy.zeros((datasets.shape[0], 4))
 times = numpy.zeros((datasets.shape[0], 15))
 # noinspection PyUnboundLocalVariable
 sa_flag = True
-for di, ds in datasets:
+for ds in datasets:
+    di = datasets.index(ds)
     if ds == 'lenses' or ds == 'zoo' or ds == 'digit1': # or ds == 'cleveland' or ds == 'led7digit' or ds == 'newthyroid':
        continue
     print('\nBase %s\n' % ds)
