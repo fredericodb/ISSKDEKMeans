@@ -828,3 +828,4 @@ with open('sa_file.txt', 'w') as sa_file:
                 dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
                 param['plug'],
                 param['kde_kernel'], param['accuracy']), file=sa_file)
+    sa_file.close()
