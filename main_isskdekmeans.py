@@ -456,6 +456,15 @@ for ds in datasets:
         sa_dsres = {'dataset': ds[0], 'results': sa_res}
         sa_results.append(sa_dsres)
         di = di + 1
+
+        print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy')
+        for dsn, dr in sa_results:
+            for param in dr:
+                print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f' % (
+                    dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
+                    param['plug'],
+                    param['kde_kernel'], param['accuracy']))
+
         continue
 
     iselect = numpy.nonzero(uselect)[0]
@@ -794,14 +803,6 @@ for ds in datasets:
     accs[di, 14] = error_kmss2
 
     di = di+1
-
-    print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy')
-    for dsn, dr in sa_results:
-        for param in dr:
-            print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f' % (
-            dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'], param['plug'],
-            param['kde_kernel'], param['accuracy']))
-
 
 print('Dataset\tAcc lp\tAcc mf\tAcc mfo\tAcc lpp\tAcc lppo\tAcc elm\tAcc elmo\tAcc sgd\tAcc sgdo\tAcc gnb\tAcc gnbo\tAcc_kms\tAcc kmss\tAcc osgwr\tAcc ossgwr\tk_lpp\tk_lppo\tk_kms\tk_kmss\tk_osgwr\tk_ossgwr\tt lp\tt lpp\tt lppo\tt sgd\tt sgdo\tt gnb\tt gnbo\tt_kms\tt_kmss\tt_osgwr\tt_ossgwr\n')
 di = 0
