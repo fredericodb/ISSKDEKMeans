@@ -458,8 +458,9 @@ for ds in datasets:
         di = di + 1
 
         print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy')
-        for dsn, dr in sa_results:
-            for param in dr:
+        for dsres in sa_results:
+            dsn = dsres['dataset']
+            for param in dsres['results']:
                 print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f' % (
                     dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
                     param['plug'],
