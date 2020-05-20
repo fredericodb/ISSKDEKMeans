@@ -453,7 +453,7 @@ for ds in datasets:
     if sa_flag:
         accs[di, 11] = error_kms
         accs[di, 12] = error_kmss
-        sa_dsres = {'dataset': ds, 'results': sa_res}
+        sa_dsres = {'dataset': ds[0], 'results': sa_res}
         sa_results.append(sa_dsres)
         di = di + 1
         continue
