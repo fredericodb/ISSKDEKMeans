@@ -457,15 +457,6 @@ for ds in datasets:
         sa_results.append(sa_dsres)
         di = di + 1
 
-        print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy')
-        for dsres in sa_results:
-            dsn = dsres['dataset']
-            for param in dsres['results']:
-                print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f' % (
-                    dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
-                    param['plug'],
-                    param['kde_kernel'], param['accuracy']))
-
         continue
 
     iselect = numpy.nonzero(uselect)[0]
@@ -813,24 +804,27 @@ for ds in datasets:
 
 print(sa_results)
 
-print('Parameters analysed:')
-if varnk:
-    print('k')
-# kde_kernel
-if varkdekernel:
-    print('kde_kernel')
-# alpha
-if varalpha:
-    print('alpha')
-# degenerated clusters
-if varmo:
-    print('mo')
-# threshold
-if varthd:
-    print('thd')
-print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy')
-for ds, dr in sa_results:
-    for param in dr:
-        print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f' % (
-        ds, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'], param['plug'],
-        param['kde_kernel'], param['accuracy']))
+with open('sa_file.txt', 'w') as sa_file:
+    print('Parameters analysed:', file=sa_file)
+    if varnk:
+        print('k', file=sa_file)
+    # kde_kernel
+    if varkdekernel:
+        print('kde_kernel', file=sa_file)
+    # alpha
+    if varalpha:
+        print('alpha', file=sa_file)
+    # degenerated clusters
+    if varmo:
+        print('mo', file=sa_file)
+    # threshold
+    if varthd:
+        print('thd', file=sa_file)
+    print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy', file=sa_file)
+    for dsres in sa_results:
+        dsn = dsres['dataset']
+        for param in dsres['results']:
+            print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f' % (
+                dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
+                param['plug'],
+                param['kde_kernel'], param['accuracy']), file=sa_file)
