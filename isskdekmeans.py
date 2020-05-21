@@ -144,8 +144,11 @@ class ISSKDEKMeans(BaseEstimator):
                         imc = imc[0]
                         irc = (T[iyc] != yc.mode[0]).nonzero()
                         irc = irc[0]
+                        mrc = len(imc)+len(irc)
+                        wmc = len(imc)/mrc
+                        wrc = len(irc)/mrc
                         if irc.shape[0] > 0:
-                            ac = alpha * numpy.mean(X[iyc[imc], :], axis=0) + (1 - alpha) * numpy.mean(X[iyc[irc], :], axis=0)
+                            ac = alpha * wmc * numpy.mean(X[iyc[imc], :], axis=0) + (1 - alpha) * wrc * numpy.mean(X[iyc[irc], :], axis=0)
                             #ac = alpha * numpy.mean(X[iyc[imc], :], axis=0) - (1 - alpha) * numpy.mean(X[iyc[irc], :], axis=0)
 
                             # add new cluster for remaining class samples
