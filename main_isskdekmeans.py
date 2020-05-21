@@ -317,12 +317,12 @@ for ds in datasets:
     plugs = [True]
     kde_kernel = ['gaussian']
 
-    varnk = False
+    varnk = True
     vardt = False
     varnit = False
     varthd = False
     varalpha = False
-    varmo = False
+    varmo = True
     varplug = False
     varkdekernel = True
 
@@ -338,7 +338,7 @@ for ds in datasets:
     if varalpha:
         alphas = numpy.arange(0.0, 1.1, 0.1)
     if varmo:
-        mos = numpy.arange(1, 16, 2)
+        mos = numpy.arange(1, 4, 1) # 2
     if varplug:
         plugs = [False, True]
     if varkdekernel:
