@@ -334,9 +334,10 @@ for ds in datasets:
     if varnit:
         nits = numpy.arange(100, 500, 100)
     if varthd:
-        thds = numpy.arange(0.0, 1.0, 0.1)
+        # thds = numpy.arange(0.0, 0.1, 0.1)
+        thds = [0.0, 0.001, 0.01, 0.1]
     if varalpha:
-        alphas = numpy.arange(0.0, 1.1, 0.1)
+        alphas = numpy.arange(0.5, 1.1, 0.1)
     if varmo:
         mos = numpy.arange(0, 3, 1) # 2
     if varplug:
