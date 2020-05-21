@@ -338,7 +338,7 @@ for ds in datasets:
     if varalpha:
         alphas = numpy.arange(0.0, 1.1, 0.1)
     if varmo:
-        mos = numpy.arange(1, 4, 1) # 2
+        mos = numpy.arange(0, 3, 1) # 2
     if varplug:
         plugs = [False, True]
     if varkdekernel:
