@@ -324,7 +324,7 @@ for ds in datasets:
     varalpha = True
     varmo = False
     varplug = False
-    varkdekernel = True
+    varkdekernel = False
 
     if varnk:
         nks = numpy.arange(n_c, 4 * n_c, n_c)
