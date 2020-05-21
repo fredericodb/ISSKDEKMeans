@@ -320,11 +320,11 @@ for ds in datasets:
     varnk = False
     vardt = False
     varnit = False
-    varthd = True
-    varalpha = True
+    varthd = False
+    varalpha = False
     varmo = False
     varplug = False
-    varkdekernel = False
+    varkdekernel = True
 
     if varnk:
         nks = numpy.arange(n_c, 4 * n_c, n_c)
