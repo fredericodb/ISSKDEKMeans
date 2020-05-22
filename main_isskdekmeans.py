@@ -319,9 +319,9 @@ for ds in datasets:
 
     varnk = False
     vardt = False
-    varnit = True
+    varnit = False
     varthd = False
-    varalpha = False
+    varalpha = True
     varmo = False
     varplug = False
     varkdekernel = False
