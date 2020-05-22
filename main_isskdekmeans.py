@@ -319,8 +319,8 @@ for ds in datasets:
 
     varnk = False
     vardt = False
-    varnit = False
-    varthd = True
+    varnit = True
+    varthd = False
     varalpha = False
     varmo = False
     varplug = False
@@ -332,7 +332,7 @@ for ds in datasets:
     if vardt:
         dts = ['euclidean', 'weighted euclidean', 'mahalanobis']
     if varnit:
-        nits = numpy.arange(100, 500, 100)
+        nits = numpy.arange(100, 300, 100)
     if varthd:
         # thds = numpy.arange(0.0, 0.1, 0.1)
         thds = [0.0, 0.001, 0.01, 0.1]
@@ -824,7 +824,7 @@ with open('sa_file.txt', 'w') as sa_file:
     # threshold
     if varthd:
         print('thd', file=sa_file)
-    print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy\ttime\titconv', file=sa_file)
+    print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy\ttime\titconv\tnk', file=sa_file)
     for dsres in sa_results:
         dsn = dsres['dataset']
         for param in dsres['results']:
