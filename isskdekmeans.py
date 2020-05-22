@@ -35,6 +35,7 @@ class ISSKDEKMeans(BaseEstimator):
         self.labels_ = 0
         self.accuracy = 0.0
         self.offline_training_time = 0.0
+        self.itconv = nit
         self.kde_class = 0
         self.kde_cluster = 0
         self.kde_clusterclass = []
@@ -177,6 +178,8 @@ class ISSKDEKMeans(BaseEstimator):
             #plt.pause(0.0001)
 
         #plt.show()
+
+        self.itconv = r
 
         # Marking orphan clusters as bad clusters
         orphan_num = mo

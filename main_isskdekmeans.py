@@ -317,12 +317,12 @@ for ds in datasets:
     plugs = [True]
     kde_kernel = ['gaussian']
 
-    varnk = True
+    varnk = False
     vardt = False
     varnit = False
-    varthd = False
+    varthd = True
     varalpha = False
-    varmo = True
+    varmo = False
     varplug = False
     varkdekernel = False
 
