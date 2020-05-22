@@ -388,6 +388,7 @@ for ds in datasets:
             sa_dic['accuracy'] = error_est
             sa_dic['time'] = est.offline_training_time
             sa_dic['itconv'] = est.itconv
+            sa_dic['final_nk'] = est.nk
             sa_res.append(sa_dic)
             print(sa_dic)
 
@@ -827,8 +828,8 @@ with open('sa_file.txt', 'w') as sa_file:
     for dsres in sa_results:
         dsn = dsres['dataset']
         for param in dsres['results']:
-            print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f\t%.4f\t%d' % (
+            print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f\t%.4f\t%d\t%d' % (
                 dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
                 param['plug'],
-                param['kde_kernel'], param['accuracy'], param['time'], param['itconv']), file=sa_file)
+                param['kde_kernel'], param['accuracy'], param['time'], param['itconv'], param['final_nk']), file=sa_file)
     sa_file.close()
