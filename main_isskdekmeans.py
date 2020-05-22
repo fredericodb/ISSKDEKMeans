@@ -332,7 +332,7 @@ for ds in datasets:
     if vardt:
         dts = ['euclidean', 'weighted euclidean', 'mahalanobis']
     if varnit:
-        nits = numpy.arange(100, 300, 100)
+        nits = numpy.arange(100, 500, 100)
     if varthd:
         # thds = numpy.arange(0.0, 0.1, 0.1)
         thds = [0.0, 0.001, 0.01, 0.1]
