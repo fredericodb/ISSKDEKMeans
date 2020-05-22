@@ -319,11 +319,11 @@ for ds in datasets:
 
     varnk = False
     vardt = False
-    varnit = False
+    varnit = True
     varthd = False
     varalpha = False
     varmo = False
-    varplug = True
+    varplug = False
     varkdekernel = False
 
     if varnk:
@@ -333,7 +333,7 @@ for ds in datasets:
         dts = ['euclidean', 'weighted euclidean', 'mahalanobis']
     if varnit:
         # nits = numpy.arange(100, 500, 100)
-        nits = [1000]
+        nits = [2000]
     if varthd:
         # thds = numpy.arange(0.0, 0.1, 0.1)
         thds = [0.0, 0.001, 0.01, 0.1]
