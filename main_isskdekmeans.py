@@ -326,7 +326,7 @@ for ds in datasets:
     varmo = False
     varplug = False
     varkdekernel = False
-    varmr = False
+    varmr = True
 
     if varnk:
         nks = numpy.arange(n_c, 4 * n_c, n_c)
@@ -430,7 +430,6 @@ for ds in datasets:
     uacpt_count = 0
     ucls_v = numpy.zeros((m_u,), dtype=numpy.int64)
     varlbl = False
-    varmr = True
     if varlbl:
         bacc == -1
         accopts = numpy.zeros((11,))
