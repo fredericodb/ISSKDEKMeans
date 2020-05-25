@@ -390,11 +390,36 @@ for ds in datasets:
             est.fit(data_l, labels_l)
             output_est = est.predict(data_t)
             error_est = accuracy_score(labels_t, output_est)
+
+            m_u = data_u.shape[0]
+            s_l = int(m_u * L)
+            uselect = numpy.zeros((m_u,), dtype=numpy.int32)
+            uacpt_count = 0
+            ucls_v = numpy.zeros((m_u,), dtype=numpy.int64)
+            _start_time = time.time()
+            for i in range(0, m_u):
+                if (s_l != 0) and (i % s_l == 0):
+                    est.fit_labeled(data_u[i, :], labels_u[i], wd, True)
+                    uselect[i] = 1
+                else:
+                    ucls, uacpt = est.fit_unlabeled(data_u[i, :], wd, False)
+                    # ucls, uacpt = bkms.fit_unlabeled2(data_u[i, :], wd)
+                    ucls_v[i] = ucls
+                    uacpt_count = uacpt_count + uacpt
+                    uselect[i] = uacpt
+            _end_time = time.time()
+            online_training_time = (_end_time - _start_time)
+
+            output_oest = est.predict(data_t)
+            error_oest = accuracy_score(labels_t, output_oest)
+
             sa_dic = param
-            sa_dic['accuracy'] = error_est
-            sa_dic['time'] = est.offline_training_time
+            sa_dic['offline_accuracy'] = error_est
+            sa_dic['offline_time'] = est.offline_training_time
             sa_dic['itconv'] = est.itconv
             sa_dic['final_nk'] = est.nk
+            sa_dic['online_accuracy'] = error_oest
+            sa_dic['online_time'] = online_training_time
             sa_res.append(sa_dic)
             print(sa_dic)
 
