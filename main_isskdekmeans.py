@@ -392,6 +392,7 @@ for ds in datasets:
             error_est = accuracy_score(labels_t, output_est)
 
             L = 0
+            wd = 0
             m_u = data_u.shape[0]
             s_l = int(m_u * L)
             uselect = numpy.zeros((m_u,), dtype=numpy.int32)
