@@ -316,8 +316,9 @@ for ds in datasets:
     mos = [1]
     plugs = [True]
     kde_kernel = ['gaussian']
+    mr = [3]
 
-    varnk = True
+    varnk = False
     vardt = False
     varnit = False
     varthd = False
@@ -325,6 +326,7 @@ for ds in datasets:
     varmo = False
     varplug = False
     varkdekernel = False
+    varmr = False
 
     if varnk:
         nks = numpy.arange(n_c, 4 * n_c, n_c)
@@ -345,6 +347,8 @@ for ds in datasets:
         plugs = [False, True]
     if varkdekernel:
         kde_kernel = ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
+    if varmr:
+        mr = numpy.arange(1, 6, 1)
     parameters = {'nk': nks,
                   'n': n,
                   'w': w,
@@ -354,7 +358,8 @@ for ds in datasets:
                   'alpha': alphas,
                   'mo': mos,
                   'plug': plugs,
-                  'kde_kernel': kde_kernel}
+                  'kde_kernel': kde_kernel,
+                  'mr': mr}
 
     grid = GridSearchCV(ISSKDEKMeans(), parameters, cv=10, scoring='accuracy', verbose=10)
     grid.fit(data_l, labels_l)
@@ -381,7 +386,7 @@ for ds in datasets:
         for param in grid.cv_results_['params']:
             est = ISSKDEKMeans(nk=param['nk'], n=param['n'], w=param['w'], dt=param['dt'], nit=param['nit'],
                                thd=param['thd'], alpha=param['alpha'], mo=param['mo'], plug=param['plug'],
-                               kde_kernel=param['kde_kernel'])
+                               kde_kernel=param['kde_kernel'], mr=param['mr'])
             est.fit(data_l, labels_l)
             output_est = est.predict(data_t)
             error_est = accuracy_score(labels_t, output_est)
@@ -400,6 +405,7 @@ for ds in datasets:
     uacpt_count = 0
     ucls_v = numpy.zeros((m_u,), dtype=numpy.int64)
     varlbl = False
+    varmr = True
     if varlbl:
         bacc == -1
         accopts = numpy.zeros((11,))

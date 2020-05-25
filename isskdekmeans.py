@@ -12,7 +12,7 @@ import logging
 class ISSKDEKMeans(BaseEstimator):
 
     def __init__(self, nk=2, n=2, w=0, dt='euclidean', cini='quantile', nit=100, thd=0, alpha=0.75, mo=1, plug=True,
-                 kde_kernel='gaussian'):
+                 kde_kernel='gaussian', mr=3):
         self.clusters = 0
         self.cf_n = 0
         self.cf_ls = 0
@@ -41,6 +41,7 @@ class ISSKDEKMeans(BaseEstimator):
         self.kde_clusterclass = []
         self.kde_better = False
         self.kde_clusterbetter = []
+        self.mr = mr
 
     def fit(self, X, T):
         _start_time = time.time()
@@ -595,7 +596,7 @@ class ISSKDEKMeans(BaseEstimator):
         n = self.n
         w1 = 1
         w2 = 0
-        mr = 3
+        mr = self.mr
         # se dois clusters tem classes iguais
         if c1 == c2:
             # se dentro do raio dos dois
