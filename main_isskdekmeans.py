@@ -857,12 +857,12 @@ with open('sa_file.txt', 'w') as sa_file:
     # threshold
     if varthd:
         print('thd', file=sa_file)
-    print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\taccuracy\ttime\titconv\tnk', file=sa_file)
+    print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\toffline_accuracy\toffline_time\titconv\tnk\tonline_accuracy\tonline_time', file=sa_file)
     for dsres in sa_results:
         dsn = dsres['dataset']
         for param in dsres['results']:
-            print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f\t%.4f\t%d\t%d' % (
+            print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%.4f\t%.4f\t%d\t%d\t%.4f\t%.4f' % (
                 dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
                 param['plug'],
-                param['kde_kernel'], param['accuracy'], param['time'], param['itconv'], param['final_nk']), file=sa_file)
+                param['kde_kernel'], param['offline_accuracy'], param['offline_time'], param['itconv'], param['final_nk'], param['online_accuracy'], param['online_time']), file=sa_file)
     sa_file.close()
