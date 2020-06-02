@@ -57,7 +57,7 @@ datasets = dic[datasetvar][0]
 #datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
 #datasets = numpy.array([['ionosphere']])
 #datasets = numpy.array([['appendicitis'], ['cleveland'],['g241n']])
-
+knn = True
 accs = numpy.zeros((datasets.shape[0], 15))
 ks = numpy.zeros((datasets.shape[0], 4))
 times = numpy.zeros((datasets.shape[0], 15))
@@ -111,9 +111,10 @@ for ds in datasets:
     neigh.fit(data_l, labels_l)
     output_knn = neigh.predict(data_t)
     error_knn = accuracy_score(labels_t, output_knn)
-    accs[di, 0] = error_knn
-    di = di + 1
-    continue
+    if knn:
+        accs[di, 0] = error_knn
+        di = di + 1
+        continue
 
     # # decision tree
     #
