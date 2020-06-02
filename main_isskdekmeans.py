@@ -106,11 +106,14 @@ for ds in datasets:
 
     # # knn
     #
-    # from sklearn.neighbors import KNeighborsClassifier
-    # neigh = KNeighborsClassifier(n_neighbors=3)
-    # neigh.fit(data_l, labels_l)
-    # output_knn = neigh.predict(data_t)
-    # error_knn = accuracy_score(labels_t, output_knn)
+    from sklearn.neighbors import KNeighborsClassifier
+    neigh = KNeighborsClassifier(n_neighbors=1)
+    neigh.fit(data_l, labels_l)
+    output_knn = neigh.predict(data_t)
+    error_knn = accuracy_score(labels_t, output_knn)
+    accs[di, 0] = error_knn
+    di = di + 1
+    continue
 
     # # decision tree
     #
@@ -326,7 +329,7 @@ for ds in datasets:
     varmo = False
     varplug = False
     varkdekernel = False
-    varmr = True
+    varmr = False
 
     if varnk:
         nks = numpy.arange(n_c, 4 * n_c, n_c)
