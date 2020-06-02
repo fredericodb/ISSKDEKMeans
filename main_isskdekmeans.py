@@ -843,30 +843,31 @@ for ds in datasets:
     print('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f' % (ds, accs[di, 0], accs[di, 1], accs[di, 2], accs[di, 3], accs[di, 4], accs[di, 5], accs[di, 6], accs[di, 7], accs[di, 8], accs[di, 9], accs[di, 10], accs[di, 11], accs[di, 12], accs[di, 13], accs[di, 14], ks[di, 0], ks[di, 1], ks[di, 2], ks[di, 3], times[di, 0], times[di, 1], times[di, 2], times[di, 3], times[di, 4], times[di, 5], times[di, 6], times[di, 7], times[di, 8], times[di, 9], times[di, 10], times[di, 11], times[di, 12], times[di, 13], times[di, 14]))
     di = di+1
 
-print(sa_results)
+if sa_flag:
+    print(sa_results)
 
-with open('sa_file.txt', 'w') as sa_file:
-    print('Parameters analysed:', file=sa_file)
-    if varnk:
-        print('k', file=sa_file)
-    # kde_kernel
-    if varkdekernel:
-        print('kde_kernel', file=sa_file)
-    # alpha
-    if varalpha:
-        print('alpha', file=sa_file)
-    # degenerated clusters
-    if varmo:
-        print('mo', file=sa_file)
-    # threshold
-    if varthd:
-        print('thd', file=sa_file)
-    print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\tmr\toffline_accuracy\toffline_time\titconv\tnk\tonline_accuracy\tonline_time', file=sa_file)
-    for dsres in sa_results:
-        dsn = dsres['dataset']
-        for param in dsres['results']:
-            print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%d\t%.4f\t%.4f\t%d\t%d\t%.4f\t%.4f' % (
-                dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
-                param['plug'],
-                param['kde_kernel'], param['mr'], param['offline_accuracy'], param['offline_time'], param['itconv'], param['final_nk'], param['online_accuracy'], param['online_time']), file=sa_file)
-    sa_file.close()
+    with open('sa_file.txt', 'w') as sa_file:
+        print('Parameters analysed:', file=sa_file)
+        if varnk:
+            print('k', file=sa_file)
+        # kde_kernel
+        if varkdekernel:
+            print('kde_kernel', file=sa_file)
+        # alpha
+        if varalpha:
+            print('alpha', file=sa_file)
+        # degenerated clusters
+        if varmo:
+            print('mo', file=sa_file)
+        # threshold
+        if varthd:
+            print('thd', file=sa_file)
+        print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\tmr\toffline_accuracy\toffline_time\titconv\tnk\tonline_accuracy\tonline_time', file=sa_file)
+        for dsres in sa_results:
+            dsn = dsres['dataset']
+            for param in dsres['results']:
+                print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%d\t%.4f\t%.4f\t%d\t%d\t%.4f\t%.4f' % (
+                    dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
+                    param['plug'],
+                    param['kde_kernel'], param['mr'], param['offline_accuracy'], param['offline_time'], param['itconv'], param['final_nk'], param['online_accuracy'], param['online_time']), file=sa_file)
+        sa_file.close()
