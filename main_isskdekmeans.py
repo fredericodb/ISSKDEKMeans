@@ -63,7 +63,7 @@ ks = numpy.zeros((datasets.shape[0], 4))
 times = numpy.zeros((datasets.shape[0], 15))
 # noinspection PyUnboundLocalVariable
 di = 0
-sa_flag = True
+sa_flag = False
 sa_results = []
 for ds in datasets:
     if ds == 'lenses' or ds == 'zoo' or ds == 'digit1': # or ds == 'cleveland' or ds == 'led7digit' or ds == 'newthyroid':
