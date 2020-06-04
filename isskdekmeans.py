@@ -97,13 +97,13 @@ class ISSKDEKMeans(BaseEstimator):
         ncluster = numpy.zeros((m,))
         bad_cluster = numpy.zeros((nk,))
         r = 1
-        t = thd+1
+        T = thd+1
         # maxd = 10;
 
         nks = numpy.zeros((nit + 2,)) # 1 nk before loop, nit nk during loop, 1 nk after remove bad clusters
         nks[0] = nk
 
-        while (r <= nit) and (t > thd): # maxd revise
+        while (r <= nit) and (T > thd): # maxd revise
             #plt.scatter(X[:, 0], X[:, 1], c="g")
 
             # calculate distances and assign clusters to samples
@@ -122,7 +122,7 @@ class ISSKDEKMeans(BaseEstimator):
 
             bad_cluster = numpy.zeros((nk,))
             # recalculate clusters
-            T = []
+            Tc = []
             ak = 0
             for c in range(0, nk):
                 # cluster c codebook
@@ -164,13 +164,13 @@ class ISSKDEKMeans(BaseEstimator):
                             ac = numpy.mean(X[iyc[imc], :], axis=0)
                         # difference of new and old positions
                         t = sum(abs(ac - fcluster[c, :])) / n
-                        T.append(t)
+                        Tc.append(t)
                         fcluster[c, :] = ac
                 else:
                     logging.debug('interno fcluster ruim %d', c)
                     bad_cluster[c] = 1
             # threshold
-            T = numpy.mean(T)
+            T = numpy.mean(Tc)
             # maybe new clusters
             nk = fcluster.shape[0]
 
