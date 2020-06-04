@@ -9,6 +9,7 @@ seed(1)
 # read results from file
 skm_res = list(csv.reader(open('skm_results.txt', 'r'), delimiter='\t'))
 algs = skm_res[0]
+skm_res.remove(algs)
 lp = skm_res[1:, 0]
 mf = skm_res[1:, 1]
 lpp = skm_res[1:, 2]
