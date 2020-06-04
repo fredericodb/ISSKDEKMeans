@@ -61,12 +61,12 @@ skm_res = list(csv.reader(open('all_results.txt', 'r'), delimiter='\t'))
 algs = skm_res[0]
 skm_res.remove(algs)
 res = []
-for j in range(16):
+for j in range(13):
     res.append(np.asarray([float(skm_res[i][j]) for i in range(16)]))
 
 # compare samples
 stat, p = friedmanchisquare(res[0], res[1], res[2], res[3], res[4], res[5], res[6], res[7], res[8], res[9], res[10],
-                            res[11], res[12], res[13], res[14], res[15])
+                            res[11], res[12])
 print('Statistics=%.3f, p=%.3f' % (stat, p))
 # interpret
 alpha = 0.05
