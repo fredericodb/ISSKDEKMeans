@@ -437,7 +437,7 @@ for ds in datasets:
     ucls_v = numpy.zeros((m_u,), dtype=numpy.int64)
     varlbl = True
     if varlbl:
-        bacc == -1
+        bacc = -1
         accopts = numpy.zeros((11,))
         timeopts = numpy.zeros((11,))
         o = 0
