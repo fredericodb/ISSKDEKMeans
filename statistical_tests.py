@@ -8,7 +8,7 @@ from scipy.stats import wilcoxon
 seed(1)
 # read results from file
 skm_res = list(csv.reader(open('skm_results.txt', 'r'), delimiter='\t'))
-algs = skm_res[0, :]
+algs = skm_res[0]
 lp = skm_res[1:, 0]
 mf = skm_res[1:, 1]
 lpp = skm_res[1:, 2]
