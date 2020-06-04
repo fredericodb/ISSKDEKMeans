@@ -20,7 +20,7 @@ osgwr = np.asarray([skm_res[i][6] for i in range(16)])
 skm = np.asarray([skm_res[i][7] for i in range(16)])
 
 for i in range(0, 7):
-    print('skm x %s', algs[i])
+    print('skm x %s' % algs[i])
     # compare samples
     stat, p = wilcoxon(skm, lp)
     print('Statistics=%.3f, p=%.3f' % (stat, p))
