@@ -24,7 +24,7 @@ for i in range(0, 7):
     print('skm x %s' % algs[i])
     # compare samples
     stat, p = wilcoxon(ref, res[i])
-    print('Statistics=%.3f, p=%.3f' % (stat, p))
+    print('Statistics=%.3f, p=%.5f' % (stat, p))
     # interpret
     alpha = 0.05
     if p > alpha:
