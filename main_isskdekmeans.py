@@ -54,7 +54,7 @@ datasetvar = 'Dataset'
 dic = readmat(datasetsource, [datasetvar])
 
 datasets = dic[datasetvar][0]
-#datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
+datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
 #datasets = numpy.array([['ionosphere']])
 #datasets = numpy.array([['appendicitis'], ['cleveland'],['g241n']])
 knn = True
@@ -106,15 +106,15 @@ for ds in datasets:
 
     # # knn
     #
-    from sklearn.neighbors import KNeighborsClassifier
-    neigh = KNeighborsClassifier(n_neighbors=1)
-    neigh.fit(data_l, labels_l)
-    output_knn = neigh.predict(data_t)
-    error_knn = accuracy_score(labels_t, output_knn)
-    if knn:
-        accs[di, 0] = error_knn
-        di = di + 1
-        continue
+    # from sklearn.neighbors import KNeighborsClassifier
+    # neigh = KNeighborsClassifier(n_neighbors=1)
+    # neigh.fit(data_l, labels_l)
+    # output_knn = neigh.predict(data_t)
+    # error_knn = accuracy_score(labels_t, output_knn)
+    # if knn:
+    #     accs[di, 0] = error_knn
+    #     di = di + 1
+    #     continue
 
     # # decision tree
     #
@@ -435,7 +435,7 @@ for ds in datasets:
     uselect = numpy.zeros((m_u,), dtype=numpy.int32)
     uacpt_count = 0
     ucls_v = numpy.zeros((m_u,), dtype=numpy.int64)
-    varlbl = False
+    varlbl = True
     if varlbl:
         bacc == -1
         accopts = numpy.zeros((11,))
