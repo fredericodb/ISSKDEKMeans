@@ -122,7 +122,7 @@ class ISSKDEKMeans(BaseEstimator):
 
             bad_cluster = numpy.zeros((nk,))
             # recalculate clusters
-            # maxd = 0.0;
+            T = []
             ak = 0
             for c in range(0, nk):
                 # cluster c codebook
@@ -164,10 +164,13 @@ class ISSKDEKMeans(BaseEstimator):
                             ac = numpy.mean(X[iyc[imc], :], axis=0)
                         # difference of new and old positions
                         t = sum(abs(ac - fcluster[c, :])) / n
+                        T.append(t)
                         fcluster[c, :] = ac
                 else:
                     logging.debug('interno fcluster ruim %d', c)
                     bad_cluster[c] = 1
+            # threshold
+            T = numpy.mean(T)
             # maybe new clusters
             nk = fcluster.shape[0]
 
