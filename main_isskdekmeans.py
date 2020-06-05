@@ -382,7 +382,7 @@ for ds in datasets:
 
     # saving for next test of unlabeled samples incremental learning
     import copy
-    kms2 = copy.deepcopy(bkms)
+    # kms2 = copy.deepcopy(bkms)
 
     # sensibility analysis
     sa_res = []
@@ -443,7 +443,7 @@ for ds in datasets:
         o = 0
         for L in numpy.arange(0.0, 1.1, 0.1):
             s_l = int(m_u * L)
-            tkms = bkms
+            tkms = copy.deepcopy(bkms)
             _start_time = time.time()
             for i in range(0, m_u):
                 if (s_l != 0) and (i % s_l == 0):
