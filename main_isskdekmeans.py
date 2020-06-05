@@ -447,9 +447,9 @@ for ds in datasets:
             _start_time = time.time()
             for i in range(0, m_u):
                 if (s_l != 0) and (i % s_l == 0):
-                    tkms.fit_labeled(data_u[i, :], labels_u[i], wd, False)
+                    tkms.fit_labeled(data_u[i, :], labels_u[i], wd, True)
                 else:
-                    tkms.fit_unlabeled(data_u[i, :], wd, False)
+                    tkms.fit_unlabeled(data_u[i, :], wd, True)
             _end_time = time.time()
             output = tkms.predict(data_t)
             accopt = accuracy_score(labels_t, output)
