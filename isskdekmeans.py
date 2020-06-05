@@ -406,10 +406,10 @@ class ISSKDEKMeans(BaseEstimator):
         # 1) if any closest two clusters have the same class as xi
         nnc = numpy.argsort(ds)
         ds = ds[nnc]
-        c1 = self.cf_class[nnc[0]] # class of cluster 1
+        c1 = self.cf_class[nnc[0]]  # class of cluster 1
         d1 = ds[0]
         if nnc.shape[0] > 1:
-            c2 = self.cf_class[nnc[1]] # class of cluster 2
+            c2 = self.cf_class[nnc[1]]  # class of cluster 2
             d2 = ds[1]
         else:
             c2 = c1
