@@ -54,9 +54,9 @@ datasetvar = 'Dataset'
 dic = readmat(datasetsource, [datasetvar])
 
 datasets = dic[datasetvar][0]
-datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
-#datasets = numpy.array([['ionosphere']])
-#datasets = numpy.array([['appendicitis'], ['cleveland'],['g241n']])
+# datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
+# datasets = numpy.array([['ionosphere']])
+# datasets = numpy.array([['appendicitis'], ['cleveland'],['g241n']])
 knn = True
 accs = numpy.zeros((datasets.shape[0], 15))
 ks = numpy.zeros((datasets.shape[0], 4))
