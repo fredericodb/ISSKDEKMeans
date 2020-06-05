@@ -104,6 +104,16 @@ for ds in datasets:
 
     from sklearn.metrics import accuracy_score
 
+    from knn import KNN
+    neigh = KNN(k=1)
+    neigh.fit(data_l, labels_l)
+    output_knn = neigh.predict(data_t)
+    error_knn = accuracy_score(labels_t, output_knn)
+    if knn:
+        accs[di, 0] = error_knn
+        di = di + 1
+        continue
+
     # # knn
     #
     # from sklearn.neighbors import KNeighborsClassifier
