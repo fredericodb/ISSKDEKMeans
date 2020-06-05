@@ -170,7 +170,7 @@ class ISSKDEKMeans(BaseEstimator):
                     logging.debug('interno fcluster ruim %d', c)
                     bad_cluster[c] = 1
             # threshold
-            Te = numpy.mean(Tc)
+            Te = numpy.max(Tc)
             # maybe new clusters
             nk = fcluster.shape[0]
 
