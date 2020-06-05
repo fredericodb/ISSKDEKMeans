@@ -13,7 +13,7 @@ class KNN:
         self.X = X
         self.T = T
 
-    def predict(self, xi):
+    def predict_one(self, xi):
         ds = distance_measures(self.X, xi.reshape((1, xi.reshape(-1).shape[0])))
         ds = ds.reshape(-1)
 
@@ -24,3 +24,10 @@ class KNN:
 
         y = stats.mode(P, axis=None)
         return y.mode[0]
+
+    def predict(self, X):
+        Y = numpy.zeros((X.shape[0],))
+        for i in range(X.shape[0]):
+            Y[i] = self.predict_one(X[i])
+
+        return Y
