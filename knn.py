@@ -4,7 +4,7 @@ from scipy import stats
 
 
 class KNN:
-    def KNN(self, k=1):
+    def __init__(self, k=1):
         self.k = k
 
     def predict(self, X, T, xi):
