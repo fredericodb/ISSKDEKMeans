@@ -2,7 +2,8 @@ import numpy
 from distance_measure import distance_measures
 from scipy import stats
 
-class KNN():
+
+class KNN:
     def KNN(self, k=1):
         self.k = k
 
