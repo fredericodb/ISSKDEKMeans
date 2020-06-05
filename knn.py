@@ -11,7 +11,6 @@ class KNN:
         ds = ds.reshape(-1)
 
         nnc = numpy.argsort(ds)
-        ds = ds[nnc]
         P = []
         for i in range(self.k):
             P.append(T[nnc[i]])  # class label
