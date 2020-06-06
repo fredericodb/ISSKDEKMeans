@@ -53,8 +53,8 @@ datasetvar = 'Dataset'
 
 dic = readmat(datasetsource, [datasetvar])
 
-datasets = dic[datasetvar][0]
-# datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
+# datasets = dic[datasetvar][0]
+datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
 # datasets = numpy.array([['ionosphere']])
 # datasets = numpy.array([['appendicitis'], ['cleveland'],['g241n']])
 use_knn = False
