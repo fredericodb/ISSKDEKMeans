@@ -552,13 +552,9 @@ class ISSKDEKMeans(BaseEstimator):
         # 1) if closest clusters have the same class
         nnc = numpy.argsort(ds)
         ds = ds[nnc]
-        if nnc[0] >= len(self.cf_class):
-            print("Hey what are you doing?")
         c1 = self.cf_class[nnc[0]]  # class of cluster 1
         d1 = ds[0]
         if nnc.shape[0] > 1:
-            if nnc[1] >= len(self.cf_class):
-                print("Hey what are you doing?")
             c2 = self.cf_class[nnc[1]]  # class of cluster 2
             d2 = ds[1]
         else:
