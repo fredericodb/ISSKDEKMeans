@@ -445,7 +445,7 @@ for ds in datasets:
     uselect = numpy.zeros((m_u,), dtype=numpy.int32)
     uacpt_count = 0
     ucls_v = numpy.zeros((m_u,), dtype=numpy.int64)
-    varlbl = False
+    varlbl = True
     if varlbl:
         bacc = -1
         accopts = numpy.zeros((11,))
