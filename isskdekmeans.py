@@ -9,6 +9,7 @@ from sklearn.base import BaseEstimator
 import time
 import logging
 
+
 class ISSKDEKMeans(BaseEstimator):
 
     def __init__(self, nk=2, n=2, w=0, dt='euclidean', cini='quantile', nit=100, thd=0, alpha=0.75, mo=1, use_kde=True,
@@ -57,33 +58,33 @@ class ISSKDEKMeans(BaseEstimator):
         mo = self.mo
         fcluster = numpy.zeros((nk, n))
         ccluster = numpy.zeros((nk, 1))
-        if cini == 'quantile': # initialize clusters
+        if cini == 'quantile':  # initialize clusters
             # distribute examples of each class to clusters equally.
             u = numpy.unique(T)
             nu = u.shape[0]
             iu = 0
-            for i in range(0,nk):
+            for i in range(0, nk):
                 ic = (T == u[iu]).nonzero()
                 ic = ic[0]
                 nic = ic.shape[0]
-                fic = X[ic,:]
-                ei = numpy.int(numpy.random.uniform(0, nic, (1,1)))
-                fcluster[i,:] = fic[ei,:]
+                fic = X[ic, :]
+                ei = numpy.int(numpy.random.uniform(0, nic, (1, 1)))
+                fcluster[i, :] = fic[ei, :]
                 ccluster[i] = u[iu]
-                if iu == (nu-1):
+                if iu == (nu - 1):
                     iu = 0
                 else:
                     iu = iu + 1
-        elif cini == 'previous': # do not initialize clusters, just read previous ones
+        elif cini == 'previous':  # do not initialize clusters, just read previous ones
             # restore previous clusters
-            for i in range(0,nk):
-                fcluster[i,:] = self.cf_ls[i,:] / self.cf_n[i]
+            for i in range(0, nk):
+                fcluster[i, :] = self.cf_ls[i, :] / self.cf_n[i]
                 ccluster[i] = self.cf_class[i]
         elif cini == 'point':
-            for i in range(0,nk):
+            for i in range(0, nk):
                 nic = X.shape[0]
-                ei = numpy.int(numpy.random.uniform(0, nic, (1,1)))
-                fcluster[i,:] = X[ei,:]
+                ei = numpy.int(numpy.random.uniform(0, nic, (1, 1)))
+                fcluster[i, :] = X[ei, :]
                 ccluster[i] = T[ei]
         else:
             print('inform cini')
@@ -97,14 +98,14 @@ class ISSKDEKMeans(BaseEstimator):
         ncluster = numpy.zeros((m,))
         bad_cluster = numpy.zeros((nk,))
         r = 1
-        t = thd+1
+        t = thd + 1
         # maxd = 10;
 
-        nks = numpy.zeros((nit + 2,)) # 1 nk before loop, nit nk during loop, 1 nk after remove bad clusters
+        nks = numpy.zeros((nit + 2,))  # 1 nk before loop, nit nk during loop, 1 nk after remove bad clusters
         nks[0] = nk
 
-        while (r <= nit) and (t > thd): # maxd revise
-            #plt.scatter(X[:, 0], X[:, 1], c="g")
+        while (r <= nit) and (t > thd):  # maxd revise
+            # plt.scatter(X[:, 0], X[:, 1], c="g")
 
             # calculate distances and assign clusters to samples
             ncluster, _ = nearest_center(fcluster, X, t=dt, Si=Si, w=w)
@@ -146,12 +147,13 @@ class ISSKDEKMeans(BaseEstimator):
                         imc = imc[0]
                         irc = (T[iyc] != yc.mode[0]).nonzero()
                         irc = irc[0]
-                        mrc = len(imc)+len(irc)
-                        wmc = len(imc)/mrc
-                        wrc = len(irc)/mrc
+                        mrc = len(imc) + len(irc)
+                        wmc = len(imc) / mrc
+                        wrc = len(irc) / mrc
                         if irc.shape[0] > 0:
-                            ac = alpha * wmc * numpy.mean(X[iyc[imc], :], axis=0) + (1 - alpha) * wrc * numpy.mean(X[iyc[irc], :], axis=0)
-                            #ac = alpha * numpy.mean(X[iyc[imc], :], axis=0) - (1 - alpha) * numpy.mean(X[iyc[irc], :], axis=0)
+                            ac = alpha * wmc * numpy.mean(X[iyc[imc], :], axis=0) + (1 - alpha) * wrc * numpy.mean(
+                                X[iyc[irc], :], axis=0)
+                            # ac = alpha * numpy.mean(X[iyc[imc], :], axis=0) - (1 - alpha) * numpy.mean(X[iyc[irc], :], axis=0)
 
                             # add new cluster for remaining class samples
                             rc = numpy.mean(X[iyc[irc], :], axis=0)
@@ -174,14 +176,14 @@ class ISSKDEKMeans(BaseEstimator):
             # maybe new clusters
             nk = fcluster.shape[0]
 
-            #plt.scatter(fcluster[:, 0], fcluster[:, 1], c="r")
+            # plt.scatter(fcluster[:, 0], fcluster[:, 1], c="r")
             nks[r] = nk
 
             r = r + 1
-            #plt.draw()
-            #plt.pause(0.0001)
+            # plt.draw()
+            # plt.pause(0.0001)
 
-        #plt.show()
+        # plt.show()
 
         self.itconv = r
 
@@ -233,17 +235,17 @@ class ISSKDEKMeans(BaseEstimator):
         self.cf_Si = Si
         self.nit = nit
 
-        for i in range(0,m):
-            xi = X[i,:]
+        for i in range(0, m):
+            xi = X[i, :]
             # update Clustering Features
             ncls = int(ncluster[i])
             # test ncls of out of bounds indexes
             if ncls == -1:
                 logging.debug('Hey! you were in a bad cluster %d', ncls)
             else:
-                self.cf_n[ncls] = self.cf_n[ncls]+1
-                self.cf_ls[ncls,:] = self.cf_ls[ncls,:]+xi
-                self.cf_ss[ncls,:] = self.cf_ss[ncls,:]+xi**2
+                self.cf_n[ncls] = self.cf_n[ncls] + 1
+                self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + xi
+                self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + xi ** 2
                 self.cf_class[ncls] = ccluster[ncls]
 
         # obtain classification
@@ -258,7 +260,7 @@ class ISSKDEKMeans(BaseEstimator):
                 yc = stats.mode(T[iyc], axis=None)
                 # assign modal class to cluster and sample
                 if yc.mode.shape[0] == 0:
-                    #print('Tamanho zero em yc\n')
+                    # print('Tamanho zero em yc\n')
                     self.cf_class[i] = -1
                     output_kms[iyc] = -1
                 else:
@@ -277,9 +279,9 @@ class ISSKDEKMeans(BaseEstimator):
         self.kde_clusterbetter = numpy.zeros((nk,), dtype=bool)
 
         # plot results
-        #plt.scatter(X[:, 0], X[:, 1], marker="o", c=T)
-        #plt.scatter(X[:, 0], X[:, 1], marker="+", c=output[:, 0])
-        #plt.show()
+        # plt.scatter(X[:, 0], X[:, 1], marker="o", c=T)
+        # plt.scatter(X[:, 0], X[:, 1], marker="+", c=output[:, 0])
+        # plt.show()
 
         logging.info("number of clusters during learning = %s" % nks[0:r])
 
@@ -368,14 +370,13 @@ class ISSKDEKMeans(BaseEstimator):
         # KDE predictions for some clusters
         for i in range(0, m):
             if self.use_kde:
-                if self.kde_clusterbetter[nclstr[i]]: # previously if self.kde_better:
+                if self.kde_clusterbetter[nclstr[i]]:  # previously if self.kde_better:
                     xi = X[i, :]
                     py = self.kde_clusterclass[nclstr[i]].predict(xi)
                     try:
                         output[i] = self.kde_clusterclass[nclstr[i]].predict(xi)
-                    except:
+                    except ValueError:
                         print("hey")
-
 
                 # # vote for class
             # cand = numpy.zeros((3,))
@@ -430,19 +431,25 @@ class ISSKDEKMeans(BaseEstimator):
                 d2 = d1
 
         if not vector:
-            R1 = numpy.sqrt(sum(self.cf_weights[nnc[0], :]*(self.cf_ss[nnc[0], :] - (self.cf_ls[nnc[0], :]**2)/self.cf_n[nnc[0]])/self.cf_n[nnc[0]]))
+            R1 = numpy.sqrt(sum(self.cf_weights[nnc[0], :] * (
+                        self.cf_ss[nnc[0], :] - (self.cf_ls[nnc[0], :] ** 2) / self.cf_n[nnc[0]]) / self.cf_n[nnc[0]]))
             if nnc.shape[0] > 1:
-                R2 = numpy.sqrt(sum(self.cf_weights[nnc[1], :]*(self.cf_ss[nnc[1], :] - (self.cf_ls[nnc[1], :]**2)/self.cf_n[nnc[1]])/self.cf_n[nnc[1]]))
+                R2 = numpy.sqrt(sum(self.cf_weights[nnc[1], :] * (
+                            self.cf_ss[nnc[1], :] - (self.cf_ls[nnc[1], :] ** 2) / self.cf_n[nnc[1]]) / self.cf_n[
+                                        nnc[1]]))
             else:
                 R2 = R1
         else:
-            R1 = numpy.sqrt(self.cf_weights[nnc[0], :]*(self.cf_ss[nnc[0], :] - (self.cf_ls[nnc[0], :]**2)/self.cf_n[nnc[0]])/self.cf_n[nnc[0]])
+            R1 = numpy.sqrt(self.cf_weights[nnc[0], :] * (
+                        self.cf_ss[nnc[0], :] - (self.cf_ls[nnc[0], :] ** 2) / self.cf_n[nnc[0]]) / self.cf_n[nnc[0]])
             if nnc.shape[0] > 1:
-                R2 = numpy.sqrt(self.cf_weights[nnc[1], :]*(self.cf_ss[nnc[1], :] - (self.cf_ls[nnc[1], :]**2)/self.cf_n[nnc[1]])/self.cf_n[nnc[1]])
+                R2 = numpy.sqrt(self.cf_weights[nnc[1], :] * (
+                            self.cf_ss[nnc[1], :] - (self.cf_ls[nnc[1], :] ** 2) / self.cf_n[nnc[1]]) / self.cf_n[
+                                    nnc[1]])
             else:
                 R2 = R1
 
-        if   (yi == c1) and (d1 <= R1).all():
+        if (yi == c1) and (d1 <= R1).all():
             nncluster = nnc[0]
         elif (yi == c2) and (d2 <= R2).all():
             nncluster = nnc[1]
@@ -462,7 +469,7 @@ class ISSKDEKMeans(BaseEstimator):
         # update Clustering Features
         ncls = int(nncluster)
         if ncls != -1:
-            if wd == 0: # full sample is added
+            if wd == 0:  # full sample is added
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
                 self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + xi
                 self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + xi ** 2
@@ -471,7 +478,7 @@ class ISSKDEKMeans(BaseEstimator):
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
 
-            if wd == 1: # linear weight
+            if wd == 1:  # linear weight
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
                 self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + w1 * xi
                 self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + (w1 * xi) ** 2
@@ -488,10 +495,10 @@ class ISSKDEKMeans(BaseEstimator):
                     self.cf_time[ncls] = 0
                     self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
-            if wd == 2: # radial basis function
+            if wd == 2:  # radial basis function
                 ncls = nrbf[0]
-                #w1 = rbfs[nrbf[0]]
-                #w2 = rbfs[nrbf[1]]
+                # w1 = rbfs[nrbf[0]]
+                # w2 = rbfs[nrbf[1]]
                 w1 = 1
                 w2 = 0
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
@@ -510,7 +517,7 @@ class ISSKDEKMeans(BaseEstimator):
                     self.cf_time[ncls] = 0
                     self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
-            if wd == 3: # distance is added
+            if wd == 3:  # distance is added
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
                 d = (xi - self.clusters[ncls, :])
                 self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + d
@@ -519,7 +526,7 @@ class ISSKDEKMeans(BaseEstimator):
                 self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
-        else: # create new cluster for new example
+        else:  # create new cluster for new example
             self.cf_n = numpy.append(self.cf_n, 1)
             self.cf_ls = numpy.append(self.cf_ls, numpy.reshape(xi, (1, xi.shape[0])), axis=0)
             self.cf_ss = numpy.append(self.cf_ss, numpy.reshape(xi ** 2, (1, xi.shape[0])), axis=0)
@@ -543,7 +550,8 @@ class ISSKDEKMeans(BaseEstimator):
 
     def fit_unlabeled(self, xi, wd=0, vector=False):
 
-        ds = distance_measures(self.clusters, xi.reshape((1, xi.reshape(-1).shape[0])), t=self.cf_distance, Si=self.cf_Si, w=self.cf_weights)
+        ds = distance_measures(self.clusters, xi.reshape((1, xi.reshape(-1).shape[0])), t=self.cf_distance,
+                               Si=self.cf_Si, w=self.cf_weights)
         ds = ds.reshape(-1)
         # ds = numpy.zeros((self.nk,))
         # mind = -1
@@ -588,23 +596,33 @@ class ISSKDEKMeans(BaseEstimator):
         Rs = numpy.zeros((self.nk,))
         Rv = numpy.zeros((self.nk, self.n))
         if not vector:
-            R1 = numpy.sqrt(sum(self.cf_weights[nnc[0], :]*(self.cf_ss[nnc[0], :] - (self.cf_ls[nnc[0], :]**2)/self.cf_n[nnc[0]])/self.cf_n[nnc[0]]))
+            R1 = numpy.sqrt(sum(self.cf_weights[nnc[0], :] * (
+                        self.cf_ss[nnc[0], :] - (self.cf_ls[nnc[0], :] ** 2) / self.cf_n[nnc[0]]) / self.cf_n[nnc[0]]))
             if nnc.shape[0] > 1:
-                R2 = numpy.sqrt(sum(self.cf_weights[nnc[1], :]*(self.cf_ss[nnc[1], :] - (self.cf_ls[nnc[1], :]**2)/self.cf_n[nnc[1]])/self.cf_n[nnc[1]]))
+                R2 = numpy.sqrt(sum(self.cf_weights[nnc[1], :] * (
+                            self.cf_ss[nnc[1], :] - (self.cf_ls[nnc[1], :] ** 2) / self.cf_n[nnc[1]]) / self.cf_n[
+                                        nnc[1]]))
             else:
                 R2 = R1
         else:
-            R1 = numpy.sqrt(self.cf_weights[nnc[0], :] * (self.cf_ss[nnc[0], :] - (self.cf_ls[nnc[0], :] ** 2) / self.cf_n[nnc[0]]) / self.cf_n[nnc[0]])
+            R1 = numpy.sqrt(self.cf_weights[nnc[0], :] * (
+                        self.cf_ss[nnc[0], :] - (self.cf_ls[nnc[0], :] ** 2) / self.cf_n[nnc[0]]) / self.cf_n[nnc[0]])
             if nnc.shape[0] > 1:
-                R2 = numpy.sqrt(self.cf_weights[nnc[1], :] * (self.cf_ss[nnc[1], :] - (self.cf_ls[nnc[1], :] ** 2) / self.cf_n[nnc[1]]) / self.cf_n[nnc[1]])
+                R2 = numpy.sqrt(self.cf_weights[nnc[1], :] * (
+                            self.cf_ss[nnc[1], :] - (self.cf_ls[nnc[1], :] ** 2) / self.cf_n[nnc[1]]) / self.cf_n[
+                                    nnc[1]])
             else:
                 R2 = R1
 
             for c in range(0, self.nk):
-                Rs[c] = numpy.sqrt(sum(self.cf_weights[nnc[c], :]*(self.cf_ss[nnc[c], :] - (self.cf_ls[nnc[c], :]**2)/self.cf_n[nnc[c]])/self.cf_n[nnc[c]]))
+                Rs[c] = numpy.sqrt(sum(self.cf_weights[nnc[c], :] * (
+                            self.cf_ss[nnc[c], :] - (self.cf_ls[nnc[c], :] ** 2) / self.cf_n[nnc[c]]) / self.cf_n[
+                                           nnc[c]]))
 
             for c in range(0, self.nk):
-                Rv[c, :] = numpy.sqrt(self.cf_weights[nnc[c], :] * (self.cf_ss[nnc[c], :] - (self.cf_ls[nnc[c], :] ** 2) / self.cf_n[nnc[c]]) / self.cf_n[nnc[c]])
+                Rv[c, :] = numpy.sqrt(self.cf_weights[nnc[c], :] * (
+                            self.cf_ss[nnc[c], :] - (self.cf_ls[nnc[c], :] ** 2) / self.cf_n[nnc[c]]) / self.cf_n[
+                                          nnc[c]])
 
         n = self.n
         w1 = 1
@@ -705,7 +723,7 @@ class ISSKDEKMeans(BaseEstimator):
         # update Clustering Features
         ncls = int(nncluster)
         if ncls != -1:
-            if wd == 0: # full sample is added
+            if wd == 0:  # full sample is added
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
                 self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + xi
                 self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + xi ** 2
@@ -714,48 +732,48 @@ class ISSKDEKMeans(BaseEstimator):
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
 
-            if wd == 1: # linear weight
+            if wd == 1:  # linear weight
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
-                self.cf_ls[ncls,:] = self.cf_ls[ncls,:] + w1 * xi
-                self.cf_ss[ncls,:] = self.cf_ss[ncls,:] + (w1 * xi) ** 2
+                self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + w1 * xi
+                self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + (w1 * xi) ** 2
                 self.cf_time[ncls] = 0
-                self.clusters[ncls,:] = self.cf_ls[ncls,:] / self.cf_n[ncls]
+                self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
 
                 if w2 != 0:
                     ncls = nnc[1]
                     self.cf_n[ncls] = self.cf_n[ncls] + 1
-                    self.cf_ls[ncls,:] = self.cf_ls[ncls,:] + w2 * xi
-                    self.cf_ss[ncls,:] = self.cf_ss[ncls,:] + (w2 * xi) ** 2
+                    self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + w2 * xi
+                    self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + (w2 * xi) ** 2
                     self.cf_time[ncls] = 0
-                    self.clusters[ncls,:] = self.cf_ls[ncls,:] / self.cf_n[ncls]
+                    self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
-            if wd == 2: # radial basis function
+            if wd == 2:  # radial basis function
                 ncls = nrbf[0]
-                #w1 = rbfs[nrbf[0]]
-                #w2 = rbfs[nrbf[1]]
+                # w1 = rbfs[nrbf[0]]
+                # w2 = rbfs[nrbf[1]]
                 w1 = 1
                 w2 = 0
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
-                self.cf_ls[ncls,:] = self.cf_ls[ncls,:] + w1 * xi
-                self.cf_ss[ncls,:] = self.cf_ss[ncls,:] + (w1 * xi) ** 2
+                self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + w1 * xi
+                self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + (w1 * xi) ** 2
                 self.cf_time[ncls] = 0
-                self.clusters[ncls,:] = self.cf_ls[ncls,:] / self.cf_n[ncls]
+                self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
 
                 if w2 != 0:
                     ncls = nrbf[1]
                     self.cf_n[ncls] = self.cf_n[ncls] + 1
-                    self.cf_ls[ncls,:] = self.cf_ls[ncls,:] + w2 * xi
-                    self.cf_ss[ncls,:] = self.cf_ss[ncls,:] + (w2 * xi) ** 2
+                    self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + w2 * xi
+                    self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + (w2 * xi) ** 2
                     self.cf_time[ncls] = 0
-                    self.clusters[ncls,:] = self.cf_ls[ncls,:] / self.cf_n[ncls]
+                    self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
-            if wd == 3: # distance is added
+            if wd == 3:  # distance is added
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
-                d = (xi - self.clusters[ncls,:])
+                d = (xi - self.clusters[ncls, :])
                 self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + d
                 self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + d ** 2
                 self.cf_time[ncls] = 0
@@ -789,19 +807,21 @@ class ISSKDEKMeans(BaseEstimator):
 
         for c in range(0, self.nk):
             xc = self.clusters[c, :]
-            ds[c]    = distance_measure(xc, xi, t='euclidean', w=self.cf_weights[c, :])
-            dcos[c]  = distance_measure(xc, xi, t='cosine')
-            dman[c]  = distance_measure(xc, xi, t='cityblock')
-            dcan[c]  = distance_measure(xc, xi, t='canberra')
-            dbc[c]   = distance_measure(xc, xi, t='braycurtis')
-            davg[c]  = distance_measure(xc, xi, t='average')
-            dcze[c]  = distance_measure(xc, xi, t='czekanowski')
-            ddiv[c]  = distance_measure(xc, xi, t='divergence')
-            dche[c]  = distance_measure(xc, xi, t='chebyshev')
-            dcor[c]  = distance_measure(xc, xi, t='correlation')
-            Rs[c]    = numpy.sqrt(sum(self.cf_weights[c, :] * (self.cf_ss[c, :] - (self.cf_ls[c, :] ** 2) / self.cf_n[c]) / self.cf_n[c]))
+            ds[c] = distance_measure(xc, xi, t='euclidean', w=self.cf_weights[c, :])
+            dcos[c] = distance_measure(xc, xi, t='cosine')
+            dman[c] = distance_measure(xc, xi, t='cityblock')
+            dcan[c] = distance_measure(xc, xi, t='canberra')
+            dbc[c] = distance_measure(xc, xi, t='braycurtis')
+            davg[c] = distance_measure(xc, xi, t='average')
+            dcze[c] = distance_measure(xc, xi, t='czekanowski')
+            ddiv[c] = distance_measure(xc, xi, t='divergence')
+            dche[c] = distance_measure(xc, xi, t='chebyshev')
+            dcor[c] = distance_measure(xc, xi, t='correlation')
+            Rs[c] = numpy.sqrt(
+                sum(self.cf_weights[c, :] * (self.cf_ss[c, :] - (self.cf_ls[c, :] ** 2) / self.cf_n[c]) / self.cf_n[c]))
             dv[c, :] = distance_measure(xc, xi, t='deltas')
-            Rv[c, :] = numpy.sqrt(self.cf_weights[c, :] * (self.cf_ss[c, :] - (self.cf_ls[c, :] ** 2) / self.cf_n[c]) / self.cf_n[c])
+            Rv[c, :] = numpy.sqrt(
+                self.cf_weights[c, :] * (self.cf_ss[c, :] - (self.cf_ls[c, :] ** 2) / self.cf_n[c]) / self.cf_n[c])
 
         # Multi-objective optimization: \epsilon -constraint method
         f = numpy.zeros((13,), dtype=numpy.float64)
@@ -856,7 +876,7 @@ class ISSKDEKMeans(BaseEstimator):
         nwin = len(minf[is_pareto_front])
         while (objf[winner, :] >= rejf).any():
             win = win + 1
-            if win <= (nwin-1):
+            if win <= (nwin - 1):
                 winner = minf[is_pareto_front][win]
             else:
                 break
@@ -893,7 +913,7 @@ class ISSKDEKMeans(BaseEstimator):
         # update Clustering Features
         ncls = int(nncluster)
         if ncls != -1:
-            if wd == 0: # full sample is added
+            if wd == 0:  # full sample is added
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
                 self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + xi
                 self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + xi ** 2
@@ -902,48 +922,48 @@ class ISSKDEKMeans(BaseEstimator):
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
 
-            if wd == 1: # linear weight
+            if wd == 1:  # linear weight
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
-                self.cf_ls[ncls,:] = self.cf_ls[ncls,:] + w1 * xi
-                self.cf_ss[ncls,:] = self.cf_ss[ncls,:] + (w1 * xi) ** 2
+                self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + w1 * xi
+                self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + (w1 * xi) ** 2
                 self.cf_time[ncls] = 0
-                self.clusters[ncls,:] = self.cf_ls[ncls,:] / self.cf_n[ncls]
+                self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
 
                 if w2 != 0:
                     ncls = nnc[1]
                     self.cf_n[ncls] = self.cf_n[ncls] + 1
-                    self.cf_ls[ncls,:] = self.cf_ls[ncls,:] + w2 * xi
-                    self.cf_ss[ncls,:] = self.cf_ss[ncls,:] + (w2 * xi) ** 2
+                    self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + w2 * xi
+                    self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + (w2 * xi) ** 2
                     self.cf_time[ncls] = 0
-                    self.clusters[ncls,:] = self.cf_ls[ncls,:] / self.cf_n[ncls]
+                    self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
-            if wd == 2: # radial basis function
+            if wd == 2:  # radial basis function
                 ncls = nrbf[0]
-                #w1 = rbfs[nrbf[0]]
-                #w2 = rbfs[nrbf[1]]
+                # w1 = rbfs[nrbf[0]]
+                # w2 = rbfs[nrbf[1]]
                 w1 = 1
                 w2 = 0
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
-                self.cf_ls[ncls,:] = self.cf_ls[ncls,:] + w1 * xi
-                self.cf_ss[ncls,:] = self.cf_ss[ncls,:] + (w1 * xi) ** 2
+                self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + w1 * xi
+                self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + (w1 * xi) ** 2
                 self.cf_time[ncls] = 0
-                self.clusters[ncls,:] = self.cf_ls[ncls,:] / self.cf_n[ncls]
+                self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
 
                 if w2 != 0:
                     ncls = nrbf[1]
                     self.cf_n[ncls] = self.cf_n[ncls] + 1
-                    self.cf_ls[ncls,:] = self.cf_ls[ncls,:] + w2 * xi
-                    self.cf_ss[ncls,:] = self.cf_ss[ncls,:] + (w2 * xi) ** 2
+                    self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + w2 * xi
+                    self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + (w2 * xi) ** 2
                     self.cf_time[ncls] = 0
-                    self.clusters[ncls,:] = self.cf_ls[ncls,:] / self.cf_n[ncls]
+                    self.clusters[ncls, :] = self.cf_ls[ncls, :] / self.cf_n[ncls]
 
-            if wd == 3: # distance is added
+            if wd == 3:  # distance is added
                 self.cf_n[ncls] = self.cf_n[ncls] + 1
-                d = (xi - self.clusters[ncls,:])
+                d = (xi - self.clusters[ncls, :])
                 self.cf_ls[ncls, :] = self.cf_ls[ncls, :] + d
                 self.cf_ss[ncls, :] = self.cf_ss[ncls, :] + d ** 2
                 self.cf_time[ncls] = 0
@@ -969,16 +989,16 @@ class ISSKDEKMeans(BaseEstimator):
         n = self.n
         fcluster = numpy.zeros((nk, n))
         ccluster = numpy.zeros((nk, 1))
-        if cini: # initialize clusters
+        if cini:  # initialize clusters
             # select cluster centroids randomly among samples
             m = X.shape[0]
-            for i in range(0,nk):
-                ei = numpy.int(numpy.random.uniform(0, m, (1,1)))
-                fcluster[i,:] = X[ei,:]
-        else: # do not initialize clusters, just read previous ones
+            for i in range(0, nk):
+                ei = numpy.int(numpy.random.uniform(0, m, (1, 1)))
+                fcluster[i, :] = X[ei, :]
+        else:  # do not initialize clusters, just read previous ones
             # restore previous clusters
-            for i in range(0,nk):
-                fcluster[i,:] = self.clusters[i,:]
+            for i in range(0, nk):
+                fcluster[i, :] = self.clusters[i, :]
                 ccluster[i] = self.cf_class[i]
 
         # unsupervised k-means
@@ -990,13 +1010,13 @@ class ISSKDEKMeans(BaseEstimator):
         ncluster = numpy.zeros((m,))
         bad_cluster = numpy.zeros((nk,))
         r = 1
-        t = thd+1
+        t = thd + 1
         # maxd = 10;
-        while (r <= nit) | (t > thd): # maxd revise
-            #plt.scatter(X[:, 0], X[:, 1], c="g")
+        while (r <= nit) | (t > thd):  # maxd revise
+            # plt.scatter(X[:, 0], X[:, 1], c="g")
             # calculate distances and assign clusters to samples
-            for i in range(0,m):
-                xi = X[i,:]
+            for i in range(0, m):
+                xi = X[i, :]
                 mind = -1
                 for c in range(0, nk):
                     xc = fcluster[c, :]
@@ -1018,26 +1038,26 @@ class ISSKDEKMeans(BaseEstimator):
                 ic = ic[0]
                 if ic.shape[0] > 0:
                     # calculate mean of samples in cluster c
-                    ac = numpy.mean(X[ic,:],axis=0)
+                    ac = numpy.mean(X[ic, :], axis=0)
                     # difference of new and old positions
-                    t = sum(abs(ac - fcluster[c,:]))/n
+                    t = sum(abs(ac - fcluster[c, :])) / n
                     # distance from cluster c to mean
                     # dd = distance_xc(dt, cn, ac, S, w)
                     # formatSpec = 'dd = %1.4f \n'
                     # fprintf(formatSpec, dd)
                     # if (dd > maxd):
-                        # maxd = dd
+                    # maxd = dd
                     # update cluster c
-                    fcluster[c,:] = ac
+                    fcluster[c, :] = ac
                 else:
                     logging.debug('interno fcluster ruim %d', c)
                     bad_cluster[c] = 1
 
-            #plt.scatter(fcluster[:, 0], fcluster[:, 1], c="r")
+            # plt.scatter(fcluster[:, 0], fcluster[:, 1], c="r")
             r = r + 1
-            #plt.draw()
-            #plt.pause(0.0001)
-        #plt.show()
+            # plt.draw()
+            # plt.pause(0.0001)
+        # plt.show()
 
         # Marking orphan clusters as bad clusters
         orphan_num = 1
@@ -1050,12 +1070,12 @@ class ISSKDEKMeans(BaseEstimator):
 
         # Eliminate bad clusters
         if (bad_cluster == 1).any():
-            igc = numpy.arange(0,nk)[(bad_cluster == 0)]
+            igc = numpy.arange(0, nk)[(bad_cluster == 0)]
             for c in range(0, igc.shape[0]):
                 i = igc[c]
-                fcluster[c,:] = fcluster[i,:]
-                w[c,:] = w[i,:]
-                ccluster[c,:] = ccluster[i,:]
+                fcluster[c, :] = fcluster[i, :]
+                w[c, :] = w[i, :]
+                ccluster[c, :] = ccluster[i, :]
                 # find samples of cluster i
                 iyc = (ncluster == i).nonzero()
                 iyc = iyc[0]
@@ -1076,17 +1096,17 @@ class ISSKDEKMeans(BaseEstimator):
         cf_Si = Si
         # nit = nit
 
-        for i in range(0,m):
-            xi = X[i,:]
+        for i in range(0, m):
+            xi = X[i, :]
             # update Clustering Features
             ncls = int(ncluster[i])
             # test ncls of out of bounds indexes
-            if ncls > (nk-1):
+            if ncls > (nk - 1):
                 logging.debug('Hey! you were in a bad cluster %d', ncls)
             else:
                 cf_n[ncls] = cf_n[ncls] + 1
-                cf_ls[ncls,:] = cf_ls[ncls,:] + xi
-                cf_ss[ncls,:] = cf_ss[ncls,:] + xi ** 2
+                cf_ls[ncls, :] = cf_ls[ncls, :] + xi
+                cf_ss[ncls, :] = cf_ss[ncls, :] + xi ** 2
                 cf_class[ncls] = ccluster[ncls]
 
         # match new batch cluster class to model cluster class
@@ -1094,10 +1114,10 @@ class ISSKDEKMeans(BaseEstimator):
         dsv = numpy.zeros((nk, self.nk, n))
         ocluster = numpy.zeros((nk,))
         for i in range(0, nk):
-            ci = fcluster[i, :] # unlabeled batch cluster
+            ci = fcluster[i, :]  # unlabeled batch cluster
             mind = -1
             for c in range(0, self.nk):
-                xc = self.clusters[c, :] # model cluster
+                xc = self.clusters[c, :]  # model cluster
                 dd = distance_measure(xc, ci, t=self.cf_distance, Si=self.cf_Si, w=self.cf_weights[c, :])
                 # dd = sqrt(sum((w. * (xc - xi)). ^ 2))
                 ds[i, c] = dd
@@ -1108,14 +1128,16 @@ class ISSKDEKMeans(BaseEstimator):
                     ccluster[i] = self.cf_class[c]
 
         # obtain classification
-        output = -1 * numpy.ones((m,1))
+        output = -1 * numpy.ones((m, 1))
         nncs = numpy.argsort(ds, axis=1)
         # calculating radius
         Rc = numpy.zeros((self.nk,))
         Rcv = numpy.zeros((self.nk, self.n))
         for c in range(0, self.nk):
-            Rc[c] = numpy.sqrt(sum(self.cf_weights[c, :] * (self.cf_ss[c, :] - (self.cf_ls[c, :] ** 2) / self.cf_n[c]) / self.cf_n[c]))
-            Rcv[c] = numpy.sqrt(self.cf_weights[c, :] * (self.cf_ss[c, :] - (self.cf_ls[c, :] ** 2) / self.cf_n[c]) / self.cf_n[c])
+            Rc[c] = numpy.sqrt(
+                sum(self.cf_weights[c, :] * (self.cf_ss[c, :] - (self.cf_ls[c, :] ** 2) / self.cf_n[c]) / self.cf_n[c]))
+            Rcv[c] = numpy.sqrt(
+                self.cf_weights[c, :] * (self.cf_ss[c, :] - (self.cf_ls[c, :] ** 2) / self.cf_n[c]) / self.cf_n[c])
         # incorporate new batch clusters to model
         for i in range(0, nk):
             Ri = numpy.sqrt(sum(cf_weights[i, :] * (cf_ss[i, :] - (cf_ls[i, :] ** 2) / cf_n[i]) / cf_n[i]))
@@ -1124,7 +1146,7 @@ class ISSKDEKMeans(BaseEstimator):
             d2 = ds[i, nnc[1]]
             Rc1 = Rc[nnc[0]]
             Rc2 = Rc[nnc[1]]
-            if cd == 0: # cd1 batch cluster within model cluster radius
+            if cd == 0:  # cd1 batch cluster within model cluster radius
                 if (d1 + Ri < Rc1) & (d2 + Ri > Rc2):
                     # if dic1 + ri < rc1 and dic2 + ri > rc2
                     c = nnc[0]
@@ -1146,7 +1168,7 @@ class ISSKDEKMeans(BaseEstimator):
                     ic = (ncluster == i).nonzero()
                     ic = ic[0]
                     output[ic] = self.cf_class[c]
-            elif cd == 1: # cd2 minimum batch cluster to model cluster distance / radius ratio
+            elif cd == 1:  # cd2 minimum batch cluster to model cluster distance / radius ratio
                 dr = ds[i, :] / Rc[:]
                 ndrs = numpy.argsort(dr)
                 c = ndrs[0]
@@ -1158,7 +1180,7 @@ class ISSKDEKMeans(BaseEstimator):
                 ic = (ncluster == i).nonzero()
                 ic = ic[0]
                 output[ic] = self.cf_class[c]
-            elif cd == 2: # cd3 combination of cd1 and cd2
+            elif cd == 2:  # cd3 combination of cd1 and cd2
                 dr = ds[i, :] / Rc[:]
                 ndrs = numpy.argsort(dr)
                 if (ndrs[0] == nnc[0]) & (d1 < Rc1):
@@ -1171,7 +1193,7 @@ class ISSKDEKMeans(BaseEstimator):
                     ic = (ncluster == i).nonzero()
                     ic = ic[0]
                     output[ic] = self.cf_class[c]
-            elif cd == 3: # cd3 includes cd1 but only samples within cluster radius are incorporated
+            elif cd == 3:  # cd3 includes cd1 but only samples within cluster radius are incorporated
                 if ((d1 + Ri < Rc1) & (d2 + Ri > Rc2)) | ((d1 < Rc1) & (d2 > Rc2)):
                     # if dic1 + ri < rc1 and dic2 + ri > rc2
                     c = nnc[0]
@@ -1299,7 +1321,7 @@ class ISSKDEKMeans(BaseEstimator):
                             self.cf_ss[c, :] = self.cf_ss[c, :] + xi ** 2
                             self.clusters[c, :] = self.cf_ls[c, :] / self.cf_n[c]
                             output[ic] = self.cf_class[c]
-            elif cd == 5: # cd4 simplified
+            elif cd == 5:  # cd4 simplified
                 c = nnc[0]
                 d = nnc[1]
                 c1 = self.cf_class[c]
@@ -1355,7 +1377,7 @@ class ISSKDEKMeans(BaseEstimator):
                             self.cf_ss[c, :] = self.cf_ss[c, :] + xi ** 2
                             self.clusters[c, :] = self.cf_ls[c, :] / self.cf_n[c]
                             output[ic] = self.cf_class[c]
-            elif cd == 6: # same as cd5 but using vector distance
+            elif cd == 6:  # same as cd5 but using vector distance
                 c = nnc[0]
                 d = nnc[1]
                 c1 = self.cf_class[c]
@@ -1368,14 +1390,14 @@ class ISSKDEKMeans(BaseEstimator):
                 Ri = numpy.sqrt(cf_weights[i, :] * (cf_ss[i, :] - (cf_ls[i, :] ** 2) / cf_n[i]) / cf_n[i])
                 if c1 == c2:
                     # se dentro do raio dos dois
-                    if (d1 < 3*Rc1).all() & (d2 < 3*Rc2).all():
+                    if (d1 < 3 * Rc1).all() & (d2 < 3 * Rc2).all():
                         nncluster = c
                     else:
                         nncluster = -1
                 # se dois clusters tem classes diferentes
                 else:
                     # se distância do segundo é maior que 2 x distância do primeiro e dentro do raio do primeiro e fora do raio do segundo
-                    if (d1 < 3*Rc1).all() & (d2 > Rc2).any():
+                    if (d1 < 3 * Rc1).all() & (d2 > Rc2).any():
                         nncluster = c
                     else:
                         nncluster = -1
@@ -1396,14 +1418,14 @@ class ISSKDEKMeans(BaseEstimator):
                         nncluster = -1
                         if c1 == c2:
                             # se dentro do raio dos dois
-                            if (d1 < 3*(Rc1 + Ri)).all() & (d2 < 3*(Rc2 + Ri)).all():
+                            if (d1 < 3 * (Rc1 + Ri)).all() & (d2 < 3 * (Rc2 + Ri)).all():
                                 nncluster = c
                             else:
                                 nncluster = -1
                         # se dois clusters tem classes diferentes
                         else:
                             # se distância do segundo é maior que 2 x distância do primeiro e dentro do raio do primeiro e fora do raio do segundo
-                            if (d1 < 3*(Rc1 + Ri)).all() & (d2 > Rc2).any():
+                            if (d1 < 3 * (Rc1 + Ri)).all() & (d2 > Rc2).any():
                                 nncluster = c
                             else:
                                 nncluster = -1
@@ -1414,7 +1436,7 @@ class ISSKDEKMeans(BaseEstimator):
                             self.cf_ss[c, :] = self.cf_ss[c, :] + xi ** 2
                             self.clusters[c, :] = self.cf_ls[c, :] / self.cf_n[c]
                             output[ic] = self.cf_class[c]
-            elif cd == 7: # same as cd6 but using vector distance radius ratio
+            elif cd == 7:  # same as cd6 but using vector distance radius ratio
                 c = nnc[0]
                 d = nnc[1]
                 c1 = self.cf_class[c]
@@ -1427,7 +1449,7 @@ class ISSKDEKMeans(BaseEstimator):
                 Ri = numpy.sqrt(cf_weights[i, :] * (cf_ss[i, :] - (cf_ls[i, :] ** 2) / cf_n[i]) / cf_n[i])
                 if c1 == c2:
                     # se dentro do raio dos dois
-                    if (d1 < 3*Rc1).all() & (d2 < 3*Rc2).all():
+                    if (d1 < 3 * Rc1).all() & (d2 < 3 * Rc2).all():
                         if (d1 / Rc1 < d2 / Rc2).all():
                             nncluster = c
                         elif (d1 / Rc1 > d2 / Rc2).all():
@@ -1439,7 +1461,7 @@ class ISSKDEKMeans(BaseEstimator):
                 # se dois clusters tem classes diferentes
                 else:
                     # se distância do segundo é maior que 2 x distância do primeiro e dentro do raio do primeiro e fora do raio do segundo
-                    if (d1 < 3*Rc1).all() & (d2 > Rc2).any():
+                    if (d1 < 3 * Rc1).all() & (d2 > Rc2).any():
                         nncluster = c
                     else:
                         nncluster = -1
@@ -1463,7 +1485,7 @@ class ISSKDEKMeans(BaseEstimator):
                         nncluster = -1
                         if c1 == c2:
                             # se dentro do raio dos dois
-                            if (d1 < 3*(Rc1 + Ri)).all() & (d2 < 3*(Rc2 + Ri)).all():
+                            if (d1 < 3 * (Rc1 + Ri)).all() & (d2 < 3 * (Rc2 + Ri)).all():
                                 if (d1 / (Rc1 + Ri) < d2 / (Rc2 + Ri)).all():
                                     nncluster = c
                                 elif (d1 / (Rc1 + Ri) > d2 / (Rc2 + Ri)).all():
@@ -1475,7 +1497,7 @@ class ISSKDEKMeans(BaseEstimator):
                         # se dois clusters tem classes diferentes
                         else:
                             # se distância do segundo é maior que 2 x distância do primeiro e dentro do raio do primeiro e fora do raio do segundo
-                            if (d1 < 3*(Rc1 + Ri)).all() & (d2 > Rc2).any():
+                            if (d1 < 3 * (Rc1 + Ri)).all() & (d2 > Rc2).any():
                                 nncluster = c
                             else:
                                 nncluster = -1
@@ -1487,7 +1509,7 @@ class ISSKDEKMeans(BaseEstimator):
                             self.cf_ss[c, :] = self.cf_ss[c, :] + xi ** 2
                             self.clusters[c, :] = self.cf_ls[c, :] / self.cf_n[c]
                             output[ic] = self.cf_class[c]
-            elif cd == 8: # cd5 extended with distance radius ratio
+            elif cd == 8:  # cd5 extended with distance radius ratio
                 c = nnc[0]
                 d = nnc[1]
                 c1 = self.cf_class[c]
@@ -1559,11 +1581,12 @@ class ISSKDEKMeans(BaseEstimator):
                             output[ic] = self.cf_class[c]
 
         # plot results
-        #plt.scatter(X[:, 0], X[:, 1], marker="o", c=T)
-        #plt.scatter(X[:, 0], X[:, 1], marker="+", c=output[:, 0])
-        #plt.show()
+        # plt.scatter(X[:, 0], X[:, 1], marker="o", c=T)
+        # plt.scatter(X[:, 0], X[:, 1], marker="+", c=output[:, 0])
+        # plt.show()
 
         return output
+
 
 class ISSKDEKMeansEnsemble(BaseEstimator):
     def __init__(self, nk=2, n=2, w=0, dt='euclidean', cini=True, nit=100, thd=0, alpha=0.75, mo=1, ver=2):
@@ -1578,13 +1601,13 @@ class ISSKDEKMeansEnsemble(BaseEstimator):
         self.mo = mo
         self.ver = ver
         # self.wkm = numpy.zeros((self.nkm,), dtype=numpy.float64)
-        self.mode = 1 # 0: vote; 1: distance
+        self.mode = 1  # 0: vote; 1: distance
         self.offline_training_time = 0.0
 
     def fit(self, X, y):
         _start_time = time.time()
         self.n = X.shape[1]
-        self.nkm = self.n+1
+        self.nkm = self.n + 1
         self.kms = []
         self.fsel = numpy.ones((self.nkm, self.n), dtype=bool)
         indices = []
@@ -1597,7 +1620,9 @@ class ISSKDEKMeansEnsemble(BaseEstimator):
 
         pout = numpy.zeros((self.nkm, X.shape[0]), dtype=numpy.int64)
         for i in range(0, self.nkm):
-            self.kms.append(ISSKDEKMeans(self.nk, sum(self.fsel[i, :]), self.w[:, self.fsel[i, :]], self.dt, self.cini, self.nit, self.thd, self.alpha, self.mo, self.ver))
+            self.kms.append(
+                ISSKDEKMeans(self.nk, sum(self.fsel[i, :]), self.w[:, self.fsel[i, :]], self.dt, self.cini, self.nit,
+                             self.thd, self.alpha, self.mo, self.ver))
             pout[i, :] = self.kms[i].fit(X[:, self.fsel[i, :]], y).reshape(-1)
         _end_time = time.time()
         self.offline_training_time = _end_time - _start_time
@@ -1636,7 +1661,6 @@ class ISSKDEKMeansEnsemble(BaseEstimator):
             else:
                 return -1, False
 
-
     def predict(self, X):
         pout = numpy.zeros((self.nkm, X.shape[0]), dtype=numpy.int64)
         pdist = numpy.zeros((self.nkm, X.shape[0]), dtype=numpy.float64)
@@ -1654,4 +1678,3 @@ class ISSKDEKMeansEnsemble(BaseEstimator):
                 return pout[neari[0], :].reshape(-1)
             else:
                 return pout[neari, :].reshape(-1)
-
