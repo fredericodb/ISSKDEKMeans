@@ -520,6 +520,10 @@ class ISSKDEKMeans(BaseEstimator):
             self.cf_ss = numpy.append(self.cf_ss, numpy.reshape(xi ** 2, (1, xi.shape[0])), axis=0)
             self.cf_time = numpy.append(self.cf_time, 0)
             self.cf_class = numpy.append(self.cf_class, yi)
+            kde = KDE()
+            kde.fit(xi, yi)
+            self.kde_clusterclass.append(kde)
+            self.kde_clusterbetter.append(True)
             self.clusters = numpy.append(self.clusters, numpy.reshape(xi, (1, xi.shape[0])), axis=0)
             ncls = self.cf_n.shape[0]
             self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
