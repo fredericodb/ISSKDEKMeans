@@ -480,7 +480,7 @@ for ds in datasets:
         print('(%labeled in [0%, 100%])')
         print('acc\tonline training time\taccepted\ttotal\n')
         for o in range(11):
-            print('%.4f\t%.4f\t%d\t%d' % (accopts[o], timeopts[o], uacpts[o][0], uacpts[o][1]))
+            print('%d\t%.4f\t%.4f\t%d\t%d' % (o * 10, accopts[o], timeopts[o], uacpts[o][0], uacpts[o][1]))
         timeopt = btime
         error_kmss = bacc
         bkms = bkmss
