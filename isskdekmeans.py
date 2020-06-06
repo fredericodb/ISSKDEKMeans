@@ -523,7 +523,7 @@ class ISSKDEKMeans(BaseEstimator):
             kde = KDE()
             kde.fit(xi, yi)
             self.kde_clusterclass.append(kde)
-            self.kde_clusterbetter.append(True)
+            self.kde_clusterbetter = numpy.append(self.kde_clusterbetter, True)
             self.clusters = numpy.append(self.clusters, numpy.reshape(xi, (1, xi.shape[0])), axis=0)
             ncls = self.cf_n.shape[0]
             self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
