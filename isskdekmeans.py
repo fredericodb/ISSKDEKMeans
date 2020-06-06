@@ -371,9 +371,11 @@ class ISSKDEKMeans(BaseEstimator):
                 if self.kde_clusterbetter[nclstr[i]]: # previously if self.kde_better:
                     xi = X[i, :]
                     py = self.kde_clusterclass[nclstr[i]].predict(xi)
-                    if py.shape[0] > 1:
+                    try:
+                        output[i] = self.kde_clusterclass[nclstr[i]].predict(xi)
+                    except:
                         print("hey")
-                    output[i] = self.kde_clusterclass[nclstr[i]].predict(xi)
+
 
                 # # vote for class
             # cand = numpy.zeros((3,))
