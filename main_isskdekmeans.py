@@ -459,7 +459,7 @@ for ds in datasets:
             uacpt_count2 = 0
             _start_time = time.time()
             for i in range(0, m_u):
-                if (s_l != 0) and (i % s_l == 0):
+                if (s_l != 0) and (i // s_l == 0):
                     tkms.fit_labeled(data_u[i, :], labels_u[i], wd, False)
                 else:
                     ucls, uacpt = tkms.fit_unlabeled(data_u[i, :], wd, False)
@@ -489,7 +489,7 @@ for ds in datasets:
         s_l = int(m_u * L)
         _start_time = time.time()
         for i in range(0, m_u):
-            if (s_l != 0) and (i % s_l == 0):
+            if (s_l != 0) and (i // s_l == 0):
                 bkms.fit_labeled(data_u[i, :], labels_u[i], wd, True)
                 uselect[i] = 1
             else:
