@@ -61,6 +61,7 @@ use_knn = False
 accs = numpy.zeros((datasets.shape[0], 15))
 ks = numpy.zeros((datasets.shape[0], 4))
 times = numpy.zeros((datasets.shape[0], 15))
+accpts = numpy.zeros((datasets.shape[0], 2))
 # noinspection PyUnboundLocalVariable
 di = 0
 sa_flag = False
@@ -497,6 +498,8 @@ for ds in datasets:
 
     ks[di, 1] = bkms.nk
     times[di, 12] = timeopt
+    accpts[di, 0] = uacpt_count
+    accpts[di, 1] = m_u
     print('kmss test acc = %.4f' % error_kmss)
     print('kmss total online time = %.3f s' % timeopt)
     print('accepted examples = %d of %d' % (uacpt_count, m_u))
@@ -847,10 +850,10 @@ for ds in datasets:
 
     di = di+1
 
-print('Dataset\tAcc lp\tAcc mf\tAcc mfo\tAcc lpp\tAcc lppo\tAcc elm\tAcc elmo\tAcc sgd\tAcc sgdo\tAcc gnb\tAcc gnbo\tAcc_kms\tAcc kmss\tAcc osgwr\tAcc ossgwr\tk_lpp\tk_lppo\tk_kms\tk_kmss\tk_osgwr\tk_ossgwr\tt lp\tt lpp\tt lppo\tt sgd\tt sgdo\tt gnb\tt gnbo\tt_kms\tt_kmss\tt_osgwr\tt_ossgwr\n')
+print('Dataset\tAcc lp\tAcc mf\tAcc mfo\tAcc lpp\tAcc lppo\tAcc elm\tAcc elmo\tAcc sgd\tAcc sgdo\tAcc gnb\tAcc gnbo\tAcc_kms\tAcc kmss\tAcc osgwr\tAcc ossgwr\tk_lpp\tk_lppo\tk_kms\tk_kmss\tk_osgwr\tk_ossgwr\tt lp\tt mf\tt mfo\tt lpp\tt lppo\tt sgd\tt sgdo\tt gnb\tt gnbo\tt_kms\tt_kmss\tt_osgwr\tt_ossgwr\tn_accept\tn_unlabeled\n')
 di = 0
 for ds in datasets:
-    print('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f' % (ds, accs[di, 0], accs[di, 1], accs[di, 2], accs[di, 3], accs[di, 4], accs[di, 5], accs[di, 6], accs[di, 7], accs[di, 8], accs[di, 9], accs[di, 10], accs[di, 11], accs[di, 12], accs[di, 13], accs[di, 14], ks[di, 0], ks[di, 1], ks[di, 2], ks[di, 3], times[di, 0], times[di, 1], times[di, 2], times[di, 3], times[di, 4], times[di, 5], times[di, 6], times[di, 7], times[di, 8], times[di, 9], times[di, 10], times[di, 11], times[di, 12], times[di, 13], times[di, 14]))
+    print('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%d\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%d\t%d' % (ds, accs[di, 0], accs[di, 1], accs[di, 2], accs[di, 3], accs[di, 4], accs[di, 5], accs[di, 6], accs[di, 7], accs[di, 8], accs[di, 9], accs[di, 10], accs[di, 11], accs[di, 12], accs[di, 13], accs[di, 14], ks[di, 0], ks[di, 1], ks[di, 2], ks[di, 3], times[di, 0], times[di, 1], times[di, 2], times[di, 3], times[di, 4], times[di, 5], times[di, 6], times[di, 7], times[di, 8], times[di, 9], times[di, 10], times[di, 11], times[di, 12], times[di, 13], times[di, 14], accpts[di, 0], accpts[di, 1]))
     di = di+1
 
 if sa_flag:
