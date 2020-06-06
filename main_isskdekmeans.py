@@ -446,7 +446,7 @@ for ds in datasets:
     uselect = numpy.zeros((m_u,), dtype=numpy.int32)
     uacpt_count = 0
     ucls_v = numpy.zeros((m_u,), dtype=numpy.int64)
-    varlbl = True
+    varlbl = False
     if varlbl:
         bacc = -1
         accopts = numpy.zeros((11,))
@@ -478,7 +478,7 @@ for ds in datasets:
                 btime = timeopt
                 bkmss = tkms
         print('(%labeled in [0%, 100%])')
-        print('acc\tonline training time\taccepted\ttotal\n')
+        print('%labeled\tacc\tonline training time\taccepted\ttotal\n')
         for o in range(11):
             print('%d\t%.4f\t%.4f\t%d\t%d' % (o * 10, accopts[o], timeopts[o], uacpts[o][0], uacpts[o][1]))
         timeopt = btime
@@ -502,6 +502,44 @@ for ds in datasets:
         timeopt = (_end_time - _start_time)
         output_kmss = bkms.predict(data_t)
         error_kmss = accuracy_score(labels_t, output_kmss)
+
+    varunlbl = True
+    if varunlbl:
+        bacc = -1
+        accopts = numpy.zeros((11,))
+        timeopts = numpy.zeros((11,))
+        uacpts = numpy.zeros((11, 2))
+        o = 0
+        for L in numpy.arange(0.0, 1.1, 0.1):
+            s_l = int(m_u * L)
+            tkms = copy.deepcopy(bkms)
+            uacpt_count2 = 0
+            _start_time = time.time()
+            for i in range(0, m_u):
+                if (s_l != 0) and (i // s_l == 0):
+                    ucls, uacpt = tkms.fit_unlabeled(data_u[i, :], wd, False)
+                    uacpt_count2 = uacpt_count2 + uacpt
+            _end_time = time.time()
+            output = tkms.predict(data_t)
+            accopt = accuracy_score(labels_t, output)
+            timeopt = (_end_time - _start_time)
+            accopts[o] = accopt
+            timeopts[o] = (_end_time - _start_time)
+            uacpts[o][0] = uacpt_count2
+            uacpts[o][1] = m_u
+            o = o + 1
+            if (bacc == -1) | (accopt > bacc):
+                bacc = accopt
+                btime = timeopt
+                bkmss = tkms
+        print('(%unlabeled in [0%, 100%])')
+        print('%unlabeled\tacc\tonline training time\taccepted\ttotal\n')
+        for o in range(11):
+            print('%d\t%.4f\t%.4f\t%d\t%d' % (o * 10, accopts[o], timeopts[o], uacpts[o][0], uacpts[o][1]))
+        timeopt = btime
+        error_kmss = bacc
+        bkms = bkmss
+
 
     ks[di, 1] = bkms.nk
     times[di, 12] = timeopt
