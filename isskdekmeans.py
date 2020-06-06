@@ -370,6 +370,7 @@ class ISSKDEKMeans(BaseEstimator):
             if self.use_kde:
                 if self.kde_clusterbetter[nclstr[i]]: # previously if self.kde_better:
                     xi = X[i, :]
+                    py = self.kde_clusterclass[nclstr[i]].predict(xi)
                     try:
                         output[i] = self.kde_clusterclass[nclstr[i]].predict(xi)
                     except:
