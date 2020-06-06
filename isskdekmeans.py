@@ -531,7 +531,7 @@ class ISSKDEKMeans(BaseEstimator):
             self.cf_ls = numpy.append(self.cf_ls, numpy.reshape(xi, (1, xi.shape[0])), axis=0)
             self.cf_ss = numpy.append(self.cf_ss, numpy.reshape(xi ** 2, (1, xi.shape[0])), axis=0)
             self.cf_time = numpy.append(self.cf_time, 0)
-            self.cf_class = numpy.append(self.cf_class, yi)
+            self.cf_class = numpy.append(self.cf_class, [yi])
             kde = KDE()
             kde.fit(xi, yi)
             self.kde_clusterclass.append(kde)
