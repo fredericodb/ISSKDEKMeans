@@ -11,7 +11,7 @@ import logging
 
 class ISSKDEKMeans(BaseEstimator):
 
-    def __init__(self, nk=2, n=2, w=0, dt='euclidean', cini='quantile', nit=100, thd=0, alpha=0.75, mo=1, plug=True,
+    def __init__(self, nk=2, n=2, w=0, dt='euclidean', cini='quantile', nit=100, thd=0, alpha=0.75, mo=1, use_kde=True,
                  kde_kernel='gaussian', mr=3):
         self.clusters = 0
         self.cf_n = 0
@@ -30,7 +30,7 @@ class ISSKDEKMeans(BaseEstimator):
         self.thd = thd
         self.alpha = alpha
         self.mo = mo
-        self.plug = plug
+        self.use_kde = use_kde
         self.kde_kernel = kde_kernel
         self.labels_ = 0
         self.accuracy = 0.0
@@ -283,7 +283,7 @@ class ISSKDEKMeans(BaseEstimator):
 
         logging.info("number of clusters during learning = %s" % nks[0:r])
 
-        if self.plug:
+        if self.use_kde:
             # Kernel Density Estimator for classes and clusters
             kde = KDE()
             kde.fit(X, T)
@@ -367,7 +367,7 @@ class ISSKDEKMeans(BaseEstimator):
 
         # KDE predictions for some clusters
         for i in range(0, m):
-            if self.plug:
+            if self.use_kde:
                 if self.kde_clusterbetter[nclstr[i]]: # previously if self.kde_better:
                     xi = X[i, :]
                     output[i] = self.kde_clusterclass[nclstr[i]].predict(xi)
@@ -649,7 +649,7 @@ class ISSKDEKMeans(BaseEstimator):
             else:
                 nncluster = -1
 
-        if self.plug:
+        if self.use_kde:
             nncluster_kde = int(self.kde_cluster.predict(xi)[0])
             if (nnc[0] == nncluster_kde) or (nnc[1] == nncluster_kde):
                 nncluster = nncluster_kde

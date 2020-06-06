@@ -53,11 +53,11 @@ datasetvar = 'Dataset'
 
 dic = readmat(datasetsource, [datasetvar])
 
-datasets = dic[datasetvar][0]
-# datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
+# datasets = dic[datasetvar][0]
+datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
 # datasets = numpy.array([['ionosphere']])
 # datasets = numpy.array([['appendicitis'], ['cleveland'],['g241n']])
-knn = True
+use_knn = False
 accs = numpy.zeros((datasets.shape[0], 15))
 ks = numpy.zeros((datasets.shape[0], 4))
 times = numpy.zeros((datasets.shape[0], 15))
@@ -104,12 +104,12 @@ for ds in datasets:
 
     from sklearn.metrics import accuracy_score
 
-    from knn import KNN
-    neigh = KNN(k=1)
-    neigh.fit(data_l, labels_l)
-    output_knn = neigh.predict(data_t)
-    error_knn = accuracy_score(labels_t, output_knn)
-    if knn:
+    if use_knn:
+        from knn import KNN
+        neigh = KNN(k=1)
+        neigh.fit(data_l, labels_l)
+        output_knn = neigh.predict(data_t)
+        error_knn = accuracy_score(labels_t, output_knn)
         accs[di, 0] = error_knn
         di = di + 1
         continue
@@ -328,7 +328,7 @@ for ds in datasets:
     thds = [0]
     alphas = [0.75]
     mos = [1]
-    plugs = [True]
+    use_kdes = [True]
     kde_kernel = ['gaussian']
     mr = [3]
 
@@ -338,7 +338,7 @@ for ds in datasets:
     varthd = False
     varalpha = False
     varmo = False
-    varplug = False
+    varusekde = False
     varkdekernel = False
     varmr = False
 
@@ -357,8 +357,8 @@ for ds in datasets:
         alphas = numpy.arange(0.5, 1.1, 0.1)
     if varmo:
         mos = numpy.arange(0, 3, 1) # 2
-    if varplug:
-        plugs = [False, True]
+    if varusekde:
+        use_kdes = [False, True]
     if varkdekernel:
         kde_kernel = ['gaussian', 'tophat', 'epanechnikov', 'exponential', 'linear', 'cosine']
     if varmr:
@@ -371,7 +371,7 @@ for ds in datasets:
                   'thd': thds,
                   'alpha': alphas,
                   'mo': mos,
-                  'plug': plugs,
+                  'use_kde': use_kdes,
                   'kde_kernel': kde_kernel,
                   'mr': mr}
 
@@ -399,7 +399,7 @@ for ds in datasets:
     if sa_flag:
         for param in grid.cv_results_['params']:
             est = ISSKDEKMeans(nk=param['nk'], n=param['n'], w=param['w'], dt=param['dt'], nit=param['nit'],
-                               thd=param['thd'], alpha=param['alpha'], mo=param['mo'], plug=param['plug'],
+                               thd=param['thd'], alpha=param['alpha'], mo=param['mo'], use_kde=param['use_kde'],
                                kde_kernel=param['kde_kernel'], mr=param['mr'])
             est.fit(data_l, labels_l)
             output_est = est.predict(data_t)
@@ -872,12 +872,12 @@ if sa_flag:
         # threshold
         if varthd:
             print('thd', file=sa_file)
-        print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tplug\tkde_kernel\tmr\toffline_accuracy\toffline_time\titconv\tnk\tonline_accuracy\tonline_time', file=sa_file)
+        print('dataset\tk\tdt\tnit\tthd\talpha\tmo\tuse_kde\tkde_kernel\tmr\toffline_accuracy\toffline_time\titconv\tnk\tonline_accuracy\tonline_time', file=sa_file)
         for dsres in sa_results:
             dsn = dsres['dataset']
             for param in dsres['results']:
                 print('%s\t%d\t%s\t%d\t%.6f\t%.2f\t%d\t%s\t%s\t%d\t%.4f\t%.4f\t%d\t%d\t%.4f\t%.4f' % (
                     dsn, param['nk'], param['dt'], param['nit'], param['thd'], param['alpha'], param['mo'],
-                    param['plug'],
+                    param['use_kde'],
                     param['kde_kernel'], param['mr'], param['offline_accuracy'], param['offline_time'], param['itconv'], param['final_nk'], param['online_accuracy'], param['online_time']), file=sa_file)
         sa_file.close()
