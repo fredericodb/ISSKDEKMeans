@@ -777,6 +777,9 @@ class ISSKDEKMeans(BaseEstimator):
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
 
+        if ncls != -1:
+            self.kde_clusterclass[ncls].fit_labeled(xi, c1)
+
             # merge and remove clusters
             # ttime = i;
             # tm = mod(ttime, 10);
