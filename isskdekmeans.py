@@ -777,6 +777,7 @@ class ISSKDEKMeans(BaseEstimator):
 
                 self.ncluster = numpy.concatenate((self.ncluster, [ncls]))
 
+        # Updating KDE model
         if ncls != -1:
             self.kde_clusterclass[ncls].fit_labeled(xi, c1)
 
