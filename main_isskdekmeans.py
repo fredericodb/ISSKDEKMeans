@@ -503,7 +503,7 @@ for ds in datasets:
         output_kmss = bkms.predict(data_t)
         error_kmss = accuracy_score(labels_t, output_kmss)
 
-    varunlbl = True
+    varunlbl = False
     if varunlbl:
         bacc = -1
         accopts = numpy.zeros((11,))
