@@ -1,6 +1,7 @@
 import time
 
 from readmat import readmat
+import os
 import numpy
 import matplotlib.pyplot as plt
 
@@ -48,31 +49,38 @@ import logging
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
-datasetsource = 'setup28'
-datasetvar = 'Dataset'
+datasetsourcetype = 'matlab'
+datasetsourcetype = 'txt'
 
-dic = readmat(datasetsource, [datasetvar])
+if datasetsourcetype == 'matlab':
+    datasetsource = 'setup28'
+    datasetvar = 'Dataset'
 
-# datasets = dic[datasetvar][0]
-# datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
-# datasets = numpy.array([['ionosphere']])
-# datasets = numpy.array([['appendicitis'], ['cleveland'],['g241n']])
-datasets = numpy.array([['appendicitis'],
-                        ['bci'],
-                        ['bupa'],
-                        ['cancer'],
-                        ['coil2'],
-                        ['g241n'],
-                        ['heart'],
-                        ['hepatitis'],
-                        ['ionosphere'],
-                        ['iris'],
-                        ['mammographic'],
-                        ['newthyroid'],
-                        ['tae'],
-                        ['usps'],
-                        ['vote'],
-                        ['wine']])
+    dic = readmat(datasetsource, [datasetvar])
+
+    # datasets = dic[datasetvar][0]
+    # datasets = numpy.array([['cancer'], ['ionosphere'], ['usps']])
+    # datasets = numpy.array([['ionosphere']])
+    # datasets = numpy.array([['appendicitis'], ['cleveland'],['g241n']])
+    datasets = numpy.array([['appendicitis'],
+                            ['bci'],
+                            ['bupa'],
+                            ['cancer'],
+                            ['coil2'],
+                            ['g241n'],
+                            ['heart'],
+                            ['hepatitis'],
+                            ['ionosphere'],
+                            ['iris'],
+                            ['mammographic'],
+                            ['newthyroid'],
+                            ['tae'],
+                            ['usps'],
+                            ['vote'],
+                            ['wine']])
+elif datasetsourcetype == 'txt':
+    datasets = numpy.array([ f[:-4] for f in os.listdir() if f.endswith(".txt") ])
+
 use_knn = False
 accs = numpy.zeros((datasets.shape[0], 15))
 ks = numpy.zeros((datasets.shape[0], 4))
@@ -88,9 +96,16 @@ for ds in datasets:
        continue
     print('\nBase %s\n' % ds)
     # read data samples
-    dic = readmat('ds_'+ds[0]+'.mat', ['samples', 'labels'])
-    samples = dic['samples']
-    labels = dic['labels']
+    if   datasetsourcetype == 'matlab':
+        dic = readmat('ds_'+ds[0]+'.mat', ['samples', 'labels'])
+        samples = dic['samples']
+        labels = dic['labels']
+    elif datasetsourcetype == 'txt':
+        import pandas as pd
+        dic = pd.read_csv(ds+'.txt', sep="\t", header=None)
+        dicdata = dic.to_numpy()
+        samples = dicdata[:,:-2]
+        labels = dicdata[:,-1]
 
     # encode labels
     from sklearn import preprocessing
