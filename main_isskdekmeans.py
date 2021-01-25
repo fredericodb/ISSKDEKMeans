@@ -100,12 +100,10 @@ for ds in datasets:
         dic = readmat('ds_'+ds[0]+'.mat', ['samples', 'labels'])
         samples = dic['samples']
         labels = dic['labels']
-    elif datasetsourcetype == 'txt':
-        import pandas as pd
-        dic = pd.read_csv(ds+'.txt', sep="\t", header=None)
-        dicdata = dic.to_numpy()
-        samples = dicdata[:,:-2]
-        labels = dicdata[:,-1]
+    elif datasetsourcetype == 'txt':        
+        dic = numpy.loadtxt(ds+".txt", delimiter = "\t")
+        samples = dic[:,:-1]
+        labels = dic[:,-1]
 
     # encode labels
     from sklearn import preprocessing
